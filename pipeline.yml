@@ -152,7 +152,7 @@ Resources:
           phases:
             build:
               commands:
-                - printf '{"Parameters":{"UserPoolId":"%s","HostingBucketDomainName":"%s","Endpoint":"%s"}}' $USER_POOLS_ID $HOSTING_BUCKET_NAME $ENDPOINT > template-configuration.json
+                - printf '{"Parameters":{"HostingBucketDomainName":"%s","Endpoint":"%s"}}' $HOSTING_BUCKET_NAME $ENDPOINT > template-configuration.json
           artifacts:
             files:
               - template-configuration.json
@@ -165,9 +165,6 @@ Resources:
             Value: !Ref Endpoint
           - Name: HOSTING_BUCKET_NAME
             Value: !GetAtt HostingBucket.DomainName
-          - Name: USER_POOLS_ID
-            Value:
-              Fn::ImportValue: !Sub "${ApiStack}-CognitoUserPool"
 
   CodeBuild:
     Type: AWS::CodeBuild::Project
