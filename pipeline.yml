@@ -184,6 +184,15 @@ Resources:
           - Name: REACT_APP_API_URL
             Value:
               Fn::ImportValue: !Sub "${ApiStack}-ApiUrl"
+          - Name: REACT_APP_AWS_USER_POOLS_ID
+            Value:
+              Fn::ImportValue: !Sub "${ApiStack}-CognitoUserPool"
+          - Name: REACT_APP_AUTH_DOMAIN
+            Value:
+              Fn::ImportValue: !Sub "${ApiStack}-CognitoUserPoolDomain"
+          - Name: REACT_APP_AWS_USER_POOLS_WEB_CLIENT_ID
+            Value:
+              Fn::ImportValue: !Sub "${ApiStack}-CognitoCliAppClient"
           - Name: REACT_APP_AWS_PROJECT_REGION
             Value: !Ref AWS::Region
           - Name: HOSTING_BUCKET_NAME
@@ -194,12 +203,7 @@ Resources:
             Value: !Join ['/', ['https:/', !Ref Endpoint, 'auth']]
           - Name: REACT_APP_AUTH_REDIRECT_SIGNOUT
             Value: !Join ['/', ['https:/', !Ref Endpoint, 'logout']]
-          - Name: REACT_APP_AWS_USER_POOLS_ID
-            Value:
-              Fn::ImportValue: !Sub "${ApiStack}-CognitoUserPool"
-          - Name: REACT_APP_AUTH_DOMAIN
-            Value:
-              Fn::ImportValue: !Sub "${ApiStack}-CognitoUserPoolDomain"
+
 
   CloudFormationRole:
     Type: AWS::IAM::Role
