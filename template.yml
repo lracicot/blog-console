@@ -73,7 +73,7 @@ Resources:
   DNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneId: !Ref AlayaDNSZoneId
+      HostedZoneId: Z2E6WEFRHH6156
       Name: !Ref Endpoint
       Type: A
       AliasTarget:
