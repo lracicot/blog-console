@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Hosting resource stack
+
+Parameters:
+  HostingBucketDomainName:
+    Type: String
+  Endpoint:
+    Type: String
+  CertificateARN:
+    Type: String
+    Default: arn:aws:acm:ca-central-1:281217159305:certificate/4bfeb843-8ba6-4409-a1ca-2b000b57ab50
+
+Resources:
+  OriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: CloudFrontOriginAccessIdentityConfig
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn:
+      - OriginAccessIdentity
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref Endpoint
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateARN
+          MinimumProtocolVersion: TLSv1_2016
+          SslSupportMethod: sni-only
+        Origins:
+          - DomainName: !Ref HostingBucketDomainName
+            Id: hostingHostingBucket
+            S3OriginConfig:
+              OriginAccessIdentity: !Join
+                - ''
+                - - origin-access-identity/cloudfront/
+                  - !Ref OriginAccessIdentity
+        Enabled: 'true'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - DELETE
+            - GET
+            - HEAD
+            - OPTIONS
+            - PATCH
+            - POST
+            - PUT
+          TargetOriginId: hostingHostingBucket
+          ForwardedValues:
+            QueryString: 'false'
+          ViewerProtocolPolicy: redirect-to-https
+          DefaultTTL: 86400
+          MaxTTL: 31536000
+          MinTTL: 60
+          Compress: true
+        DefaultRootObject: index.html
+        CustomErrorResponses:
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 400
+            ResponseCode: 200
+            ResponsePagePath: /
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /
+
+  DNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: Z2E6WEFRHH6156
+      Name: !Ref Endpoint
+      Type: A
+      AliasTarget:
+        HostedZoneId: !GetAtt PostDomainName.DistributionHostedZoneId
+        DNSName: !GetAtt PostDomainName.DistributionDomainName
+
+Outputs:
+  Region:
+    Value: !Ref 'AWS::Region'
+  CloudFrontDistributionID:
+    Value: !Ref CloudFrontDistribution
+  CloudFrontDomainName:
+    Value: !GetAtt CloudFrontDistribution.DomainName
+  CloudFrontSecureURL:
+    Value: !Join ['', ['https://', !GetAtt CloudFrontDistribution.DomainName]]
