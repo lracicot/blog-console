@@ -77,8 +77,8 @@ Resources:
       Name: !Ref Endpoint
       Type: A
       AliasTarget:
-        HostedZoneId: !GetAtt PostDomainName.DistributionHostedZoneId
-        DNSName: !GetAtt PostDomainName.DistributionDomainName
+        HostedZoneId: !GetAtt CloudFrontDistribution.DistributionHostedZoneId
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
 
 Outputs:
   Region:
