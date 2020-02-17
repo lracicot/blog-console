@@ -8,7 +8,7 @@ Parameters:
     Type: String
   CertificateARN:
     Type: String
-    Default: arn:aws:acm:ca-central-1:281217159305:certificate/4bfeb843-8ba6-4409-a1ca-2b000b57ab50
+    Default: arn:aws:acm:us-east-1:281217159305:certificate/834042a2-c706-4c3c-8e6b-04bcd698804a
 
 Resources:
   OriginAccessIdentity:
