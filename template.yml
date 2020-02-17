@@ -73,12 +73,13 @@ Resources:
   DNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
-      HostedZoneId: Z2E6WEFRHH6156
+      HostedZoneId: !Ref AlayaDNSZoneId
       Name: !Ref Endpoint
       Type: A
       AliasTarget:
-        HostedZoneId: !GetAtt CloudFrontDistribution.DistributionHostedZoneId
+        HostedZoneId: Z2FDTNDATAQYW2 # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution.
         DNSName: !GetAtt CloudFrontDistribution.DomainName
+        EvaluateTargetHealth: true
 
 Outputs:
   Region:
