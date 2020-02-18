@@ -64,6 +64,7 @@ renderEditor.propTypes = {
 const EditPostForm = props => {
   const classes = useStyles();
   const {
+    isPublishing,
     handleSubmit,
     handlePublish,
     handleArchive,
@@ -79,6 +80,7 @@ const EditPostForm = props => {
         variant="contained"
         color="secondary"
         onClick={handlePublish}
+        disabled={isPublishing}
       >
         Publish
       </Button>
@@ -146,6 +148,7 @@ const EditPostForm = props => {
 };
 
 EditPostForm.propTypes = {
+  isPublishing: PropTypes.bool,
   handleSubmit: PropTypes.func,
   handlePublish: PropTypes.func,
   handleArchive: PropTypes.func,

@@ -57,6 +57,13 @@ export function createPostsFailure(error) {
   };
 }
 
+export function publishPostsRequest(uuid) {
+  return {
+    type: Action.PUBLISH_POST_REQUEST,
+    data: uuid
+  };
+}
+
 export function publishPostsSuccess(post) {
   return {
     type: Action.PUBLISH_POST_SUCCESS,
@@ -66,7 +73,7 @@ export function publishPostsSuccess(post) {
 
 export function archivePostsSuccess(post) {
   return {
-    type: Action.PUBLISH_POST_SUCCESS,
+    type: Action.ARCHIVE_POST_SUCCESS,
     data: fromJS(post)
   };
 }

@@ -45,12 +45,17 @@ export function createPost(data) {
 }
 
 export function publishPost(uuid) {
-  return postProtectedData(
-    postTypes.POSTS_API.PUBLISH_POST_URL(uuid),
-    {},
-    ["profile", "idToken"],
-    Actions.publishPostsSuccess
-  );
+  return dispatch => {
+    dispatch(Actions.publishPostsRequest(uuid));
+    dispatch(
+      postProtectedData(
+        postTypes.POSTS_API.PUBLISH_POST_URL(uuid),
+        {},
+        ["profile", "idToken"],
+        Actions.publishPostsSuccess
+      )
+    );
+  };
 }
 
 export function archivePost(uuid) {

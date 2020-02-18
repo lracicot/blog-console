@@ -53,7 +53,7 @@ class EditPost extends React.Component {
   }
 
   render() {
-    const { data, classes } = this.props;
+    const { data, classes, isPublishing } = this.props;
     if (data) {
       return (
         <Container maxWidth="md" className={classes.formContainer}>
@@ -62,6 +62,7 @@ class EditPost extends React.Component {
             onSubmit={this.save.bind(this)}
             handleArchive={this.handleArchive.bind(this)}
             handlePublish={this.handlePublish.bind(this)}
+            isPublishing={isPublishing}
           />
         </Container>
       );
@@ -73,6 +74,7 @@ class EditPost extends React.Component {
 
 EditPost.propTypes = {
   data: PropTypes.any,
+  isPublishing: PropTypes.bool,
   retreivePost: PropTypes.func,
   archivePost: PropTypes.func,
   publishPost: PropTypes.func,
@@ -85,7 +87,10 @@ function mapStateToProps(state) {
   return {
     data: state.hasIn(["app", "currentPost"])
       ? state.getIn(["app", "currentPost"]).toJS()
-      : null
+      : null,
+    isPublishing: state.hasIn(["app", "isPublishing"])
+      ? state.getIn(["app", "isPublishing"])
+      : false
   };
 }
 

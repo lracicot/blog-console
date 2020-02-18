@@ -24,6 +24,15 @@ export default function(state = Map(), action) {
           ? action.data.set("content", JSON.parse(action.data.get("content")))
           : action.data
       );
+    case postAction.PUBLISH_POST_REQUEST:
+      return state.merge({
+        isPublishing: true
+      });
+    case postAction.PUBLISH_POST_SUCCESS:
+    case postAction.PUBLISH_POST_FAILURE:
+      return state.merge({
+        isPublishing: false
+      });
     case postAction.RETREIVE_POST_FAILURE:
       return {
         ...state,
