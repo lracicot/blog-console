@@ -1,9 +1,11 @@
 import React from "react";
 
-import Spinner from "../../components/Spinner/Spinner";
-
 function App() {
-  return <Spinner />;
+  return (
+    <div className="App">
+      <header className="App-header"></header>
+    </div>
+  );
 }
 
 export default App;

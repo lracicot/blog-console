@@ -24,6 +24,7 @@ class Layout extends React.Component {
     // if (redirect) {
     //   return <Redirect to={redirect} />;
     // }
+    console.log(children);
     return (
       <div className="layout">
         <Header

@@ -20,7 +20,7 @@ class App extends React.Component {
               <Route path="/post/:uuid/edit" component={EditPost} />
               <Route path="/logout" component={LogoutComponent} />
               <Route path="/" component={MainComponent} />
-              <Redirect from="/auth" to="/" />;
+              <Redirect from="/auth" to="/" />
             </Layout>
           </Router>
         </StyleProvider>
