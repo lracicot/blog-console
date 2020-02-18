@@ -6,20 +6,20 @@ import {
   convertToRaw
 } from "draft-js";
 import { fromJS } from "immutable";
-import { makeStyles } from "@material-ui/core";
+// import { makeStyles } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import React from "react";
 
 import PropTypes from "prop-types";
 
-const useStyles = makeStyles(theme => {
-  console.log(theme);
-  return {
-    // container: {
-    //   border: "1px solid black"
-    // }
-  };
-});
+// const useStyles = makeStyles(theme => {
+//   console.log(theme);
+//   return {
+//     // container: {
+//     //   border: "1px solid black"
+//     // }
+//   };
+// });
 const defaultProps = {
   // bgcolor: "background.paper",
   borderColor: "grey.400",
@@ -31,7 +31,7 @@ const defaultProps = {
 };
 
 const PostEditor = props => {
-  const classes = useStyles();
+  // const classes = useStyles();
   let initialEditorState = EditorState.createEmpty();
   if (props.value) {
     initialEditorState = EditorState.createWithContent(
@@ -49,7 +49,7 @@ const PostEditor = props => {
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <button onClick={_onBoldClick.bind(this)}>Bold</button>
       <Box borderRadius="borderRadius" {...defaultProps}>
         <Editor

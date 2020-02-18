@@ -58,7 +58,11 @@ export function requestData(
       })
         .then(res => {
           return dispatch(onSuccess(res.data));
-      }).catch(error => dispatch(onFailure(error))); // eslint-disable-line
+        })
+        .catch(error => {
+          console.log(error);
+          return dispatch(onFailure(error));
+        });
     } catch (error) {
       return dispatch(onFailure(error));
     }

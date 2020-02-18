@@ -1,9 +1,10 @@
-import { AccountCircle } from "@material-ui/icons";
+import { AccountCircle, Add } from "@material-ui/icons";
 import {
   Divider,
   Drawer,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
@@ -75,12 +76,24 @@ const useStyles = makeStyles(theme => ({
     color: "#fafafa",
     textDecoration: "none"
   },
-  linkPrimary: {
+  linkPrimaryPublished: {
     fontSize: "1.2em",
     fontWeight: "bold"
   },
+  linkPrimaryDraft: {
+    fontSize: "1.2em",
+    fontStyle: "italic",
+    color: "#bbbbbb"
+  },
+  linkPrimaryArchived: {
+    fontSize: "1.2em",
+    color: "#686868"
+  },
   linkSecondary: {
     color: "#aaaaaa"
+  },
+  lightIcon: {
+    color: "#fafafa"
   }
 }));
 
@@ -173,9 +186,9 @@ const Header = props => {
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon className={classes.lightIcon} />
             ) : (
-              <ChevronRightIcon />
+              <ChevronRightIcon className={classes.lightIcon} />
             )}
           </IconButton>
         </div>
@@ -196,6 +209,9 @@ const Header = props => {
         <Divider />
         <AddPostModal createPost={createPost}>
           <ListItem button>
+            <ListItemIcon>
+              <Add className={classes.lightIcon} />
+            </ListItemIcon>
             <ListItemText
               className={classes.link}
               classes={{
@@ -208,22 +224,34 @@ const Header = props => {
         <Divider />
         <List>
           {posts.map(post => (
-            <ListItem button key={post.uuid}>
-              <NavLink
-                to={`/post/${post.uuid}/edit`}
-                className={classes.link}
-                onClick={handleDrawerClose}
-              >
+            <NavLink
+              key={post.uuid}
+              to={`/post/${post.uuid}/edit`}
+              className={classes.link}
+              onClick={handleDrawerClose}
+            >
+              <ListItem button>
                 <ListItemText
                   classes={{
-                    primary: classes.linkPrimary,
+                    primary:
+                      post.status === "published"
+                        ? classes.linkPrimaryPublished
+                        : post.status === "draft"
+                        ? classes.linkPrimaryDraft
+                        : classes.linkPrimaryArchived,
                     secondary: classes.linkSecondary
                   }}
                   primary={post.title}
-                  secondary={moment(post.created_at).format("YYYY-MM-DD HH:mm")}
+                  secondary={
+                    <React.Fragment>
+                      {moment(post.created_at).format("YYYY-MM-DD HH:mm")}
+                      <br />
+                      <em>{post.status}</em>
+                    </React.Fragment>
+                  }
                 />
-              </NavLink>
-            </ListItem>
+              </ListItem>
+            </NavLink>
           ))}
         </List>
         <Divider />
