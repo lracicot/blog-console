@@ -1,15 +1,27 @@
+import { Button, makeStyles } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core";
 
 import PropTypes from "prop-types";
 
 import PostEditor from "../PostEditor";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   formControl: {
-    marginTop: "10px"
+    marginTop: "20px"
+  },
+  resize: {
+    fontSize: 35
+  },
+  smallInput: {
+    fontSize: 12,
+    color: "#888888"
+  },
+  buttonGroup: {
+    "& > *": {
+      margin: theme.spacing(1)
+    }
   }
 }));
 
@@ -51,17 +63,60 @@ renderEditor.propTypes = {
 
 const EditPostForm = props => {
   const classes = useStyles();
-  const { handleSubmit, pristine, reset, submitting, initialValues } = props;
-  console.log(initialValues.toJS());
+  const {
+    handleSubmit,
+    handlePublish,
+    handleArchive,
+    pristine,
+    submitting,
+    initialValues
+  } = props;
+
+  const actionButton =
+    initialValues.get("status") !== "published" ? (
+      <Button
+        type="button"
+        variant="contained"
+        color="secondary"
+        onClick={handlePublish}
+      >
+        Publish
+      </Button>
+    ) : (
+      <Button
+        type="button"
+        variant="contained"
+        color="secondary"
+        onClick={handleArchive}
+      >
+        Archive
+      </Button>
+    );
+
   return (
     <form onSubmit={handleSubmit}>
+      <div className={classes.buttonGroup}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={pristine || submitting}
+        >
+          Save
+        </Button>
+        {actionButton}
+      </div>
       <div className={classes.formControl}>
         <Field
           name="title"
           fullWidth
           component={renderTextField}
           label="Title"
-          // className={classes.titleInput}
+          InputProps={{
+            classes: {
+              input: classes.resize
+            }
+          }}
         />
       </div>
       <div className={classes.formControl}>
@@ -70,6 +125,11 @@ const EditPostForm = props => {
           component={renderTextField}
           label="Url"
           variant="outlined"
+          InputProps={{
+            classes: {
+              input: classes.smallInput
+            }
+          }}
           fullWidth
           size="small"
         />
@@ -81,20 +141,14 @@ const EditPostForm = props => {
           key={initialValues.get("uuid")}
         />
       </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting}>
-          Submit
-        </button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </button>
-      </div>
     </form>
   );
 };
 
 EditPostForm.propTypes = {
   handleSubmit: PropTypes.func,
+  handlePublish: PropTypes.func,
+  handleArchive: PropTypes.func,
   pristine: PropTypes.any,
   reset: PropTypes.func,
   submitting: PropTypes.bool,

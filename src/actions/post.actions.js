@@ -56,3 +56,17 @@ export function createPostsFailure(error) {
     error: fromJS(error)
   };
 }
+
+export function publishPostsSuccess(post) {
+  return {
+    type: Action.PUBLISH_POST_SUCCESS,
+    data: fromJS(post)
+  };
+}
+
+export function archivePostsSuccess(post) {
+  return {
+    type: Action.PUBLISH_POST_SUCCESS,
+    data: fromJS(post)
+  };
+}

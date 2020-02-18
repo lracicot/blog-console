@@ -1,15 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
   Editor,
   EditorState,
-  // ContentState,
+  RichUtils,
   convertFromRaw,
   convertToRaw
 } from "draft-js";
 import { fromJS } from "immutable";
 import { makeStyles } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
+import React from "react";
+
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles(theme => {
   console.log(theme);
@@ -43,9 +44,13 @@ const PostEditor = props => {
     setEditorState(editorState);
     props.onChange(fromJS(convertToRaw(editorState.getCurrentContent())));
   };
+  const _onBoldClick = () => {
+    handleChange(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+  };
 
   return (
     <div className={classes.root}>
+      <button onClick={_onBoldClick.bind(this)}>Bold</button>
       <Box borderRadius="borderRadius" {...defaultProps}>
         <Editor
           editorState={editorState}

@@ -43,3 +43,21 @@ export function createPost(data) {
     Actions.createPostsFailure
   );
 }
+
+export function publishPost(uuid) {
+  return postProtectedData(
+    postTypes.POSTS_API.PUBLISH_POST_URL(uuid),
+    {},
+    ["profile", "idToken"],
+    Actions.publishPostsSuccess
+  );
+}
+
+export function archivePost(uuid) {
+  return postProtectedData(
+    postTypes.POSTS_API.ARCHIVE_POST_URL(uuid),
+    {},
+    ["profile", "idToken"],
+    Actions.archivePostsSuccess
+  );
+}

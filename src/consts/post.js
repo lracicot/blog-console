@@ -7,10 +7,18 @@ export const postTypes = {
   UPDATE_POST_FAILURE: "UPDATE_POST_FAILURE",
   CREATE_POST_SUCCESS: "CREATE_POST_SUCCESS",
   CREATE_POST_FAILURE: "CREATE_POST_FAILURE",
+  PUBLISH_POST_SUCCESS: "PUBLISH_POST_SUCCESS",
+  PUBLISH_POST_FAILURE: "PUBLISH_POST_FAILURE",
+  ARCHIVE_POST_SUCCESS: "ARCHIVE_POST_SUCCESS",
+  ARCHIVE_POST_FAILURE: "ARCHIVE_POST_FAILURE",
   POSTS_API: {
     LIST_POSTS_URL: () => `${process.env.REACT_APP_API_URL}/post/all`,
     UPDATE_POST_URL: uuid => `${process.env.REACT_APP_API_URL}/post/${uuid}`,
     RETREIVE_POST_URL: uuid => `${process.env.REACT_APP_API_URL}/post/${uuid}`,
+    PUBLISH_POST_URL: uuid =>
+      `${process.env.REACT_APP_API_URL}/post/${uuid}/publish`,
+    ARCHIVE_POST_URL: uuid =>
+      `${process.env.REACT_APP_API_URL}/post/${uuid}/archive`,
     CREATE_POST_URL: () => `${process.env.REACT_APP_API_URL}/post`
   }
 };

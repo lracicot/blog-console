@@ -22,9 +22,11 @@ class EditPost extends React.Component {
       postUuid: props.match.params.uuid
     };
   }
+
   componentDidMount() {
     this.props.retreivePost(this.state.postUuid);
   }
+
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.uuid !== this.props.match.params.uuid) {
       this.setState({
@@ -33,6 +35,7 @@ class EditPost extends React.Component {
       this.props.retreivePost(this.props.match.params.uuid);
     }
   }
+
   save(data) {
     const jsData = data.toJS();
     this.props.updatePost(this.state.postUuid, {
@@ -41,12 +44,25 @@ class EditPost extends React.Component {
     });
   }
 
+  handleArchive() {
+    this.props.archivePost(this.state.postUuid);
+  }
+
+  handlePublish() {
+    this.props.publishPost(this.state.postUuid);
+  }
+
   render() {
     const { data, classes } = this.props;
     if (data) {
       return (
         <Container maxWidth="md" className={classes.formContainer}>
-          <EditPostForm initialValues={data} onSubmit={this.save.bind(this)} />
+          <EditPostForm
+            initialValues={data}
+            onSubmit={this.save.bind(this)}
+            handleArchive={this.handleArchive.bind(this)}
+            handlePublish={this.handlePublish.bind(this)}
+          />
         </Container>
       );
     } else {
@@ -58,6 +74,8 @@ class EditPost extends React.Component {
 EditPost.propTypes = {
   data: PropTypes.any,
   retreivePost: PropTypes.func,
+  archivePost: PropTypes.func,
+  publishPost: PropTypes.func,
   updatePost: PropTypes.func,
   match: PropTypes.object,
   classes: PropTypes.object
