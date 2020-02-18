@@ -1,9 +1,17 @@
 import { Field, reduxForm } from "redux-form/immutable";
 import React from "react";
-import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core";
 
-import PostEditor from "../../components/PostEditor";
+import PropTypes from "prop-types";
+
+import PostEditor from "../PostEditor";
+
+const useStyles = makeStyles(() => ({
+  formControl: {
+    marginTop: "10px"
+  }
+}));
 
 // const validate = values => {
 //   const errors = {};
@@ -41,15 +49,36 @@ renderEditor.propTypes = {
   input: PropTypes.any
 };
 
-const PostForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props;
+const EditPostForm = props => {
+  const classes = useStyles();
+  const { handleSubmit, pristine, reset, submitting, initialValues } = props;
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <Field name="title" component={renderTextField} label="Title" />
+      <div className={classes.formControl}>
+        <Field
+          name="title"
+          fullWidth
+          component={renderTextField}
+          label="Title"
+          // className={classes.titleInput}
+        />
       </div>
-      <div>
-        <Field name="content" component={renderEditor} />
+      <div className={classes.formControl}>
+        <Field
+          name="slug"
+          component={renderTextField}
+          label="Url"
+          variant="outlined"
+          fullWidth
+          size="small"
+        />
+      </div>
+      <div className={classes.formControl}>
+        <Field
+          name="content"
+          component={renderEditor}
+          key={initialValues.get("uuid")}
+        />
       </div>
       <div>
         <button type="submit" disabled={pristine || submitting}>
@@ -63,14 +92,16 @@ const PostForm = props => {
   );
 };
 
-PostForm.propTypes = {
+EditPostForm.propTypes = {
   handleSubmit: PropTypes.func,
   pristine: PropTypes.any,
   reset: PropTypes.func,
-  submitting: PropTypes.bool
+  submitting: PropTypes.bool,
+  initialValues: PropTypes.any
 };
 
 export default reduxForm({
-  form: "PostForm" // a unique identifier for this form
+  form: "EditPostForm",
+  enableReinitialize: true
   // validate
-})(PostForm);
+})(EditPostForm);

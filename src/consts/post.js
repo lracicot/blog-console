@@ -5,9 +5,12 @@ export const postTypes = {
   RETREIVE_POST_FAILURE: "RETREIVE_POST_FAILURE",
   UPDATE_POST_SUCCESS: "UPDATE_POST_SUCCESS",
   UPDATE_POST_FAILURE: "UPDATE_POST_FAILURE",
+  CREATE_POST_SUCCESS: "CREATE_POST_SUCCESS",
+  CREATE_POST_FAILURE: "CREATE_POST_FAILURE",
   POSTS_API: {
     LIST_POSTS_URL: () => `${process.env.REACT_APP_API_URL}/post/all`,
     UPDATE_POST_URL: uuid => `${process.env.REACT_APP_API_URL}/post/${uuid}`,
-    RETREIVE_POST_URL: uuid => `${process.env.REACT_APP_API_URL}/post/${uuid}`
+    RETREIVE_POST_URL: uuid => `${process.env.REACT_APP_API_URL}/post/${uuid}`,
+    CREATE_POST_URL: () => `${process.env.REACT_APP_API_URL}/post`
   }
 };

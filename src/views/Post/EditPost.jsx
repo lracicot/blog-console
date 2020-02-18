@@ -1,12 +1,19 @@
 import { Container } from "@material-ui/core";
 import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
 import React from "react";
 
 import PropTypes from "prop-types";
 
-import PostForm from "./PostForm";
 import Spinner from "../../components/Spinner/Spinner";
+import EditPostForm from "../../components/Post/EditPostForm";
 import * as actionCreators from "../../actions/post.creators";
+
+const styles = {
+  formContainer: {
+    marginTop: "30px"
+  }
+};
 
 class EditPost extends React.Component {
   constructor(props) {
@@ -27,15 +34,19 @@ class EditPost extends React.Component {
     }
   }
   save(data) {
-    this.props.updatePost(this.state.postUuid, data.toJS());
+    const jsData = data.toJS();
+    this.props.updatePost(this.state.postUuid, {
+      ...jsData,
+      content: JSON.stringify(jsData.content)
+    });
   }
 
   render() {
-    const { data } = this.props;
+    const { data, classes } = this.props;
     if (data) {
       return (
-        <Container maxWidth="md">
-          <PostForm
+        <Container maxWidth="md" className={classes.formContainer}>
+          <EditPostForm
             initialValues={data}
             onSubmit={this.save.bind(this)}
             key={data.slug}
@@ -52,7 +63,8 @@ EditPost.propTypes = {
   data: PropTypes.any,
   retreivePost: PropTypes.func,
   updatePost: PropTypes.func,
-  match: PropTypes.object
+  match: PropTypes.object,
+  classes: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -63,4 +75,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actionCreators)(EditPost);
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(withStyles(styles)(EditPost));

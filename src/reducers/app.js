@@ -17,7 +17,13 @@ export default function(state = Map(), action) {
         ...{ error: action.error.toString() }
       };
     case postAction.RETREIVE_POST_SUCCESS:
-      return state.set("currentPost", action.data);
+      console.log();
+      return state.set(
+        "currentPost",
+        action.data.has("content")
+          ? action.data.set("content", JSON.parse(action.data.get("content")))
+          : action.data
+      );
     case postAction.RETREIVE_POST_FAILURE:
       return {
         ...state,

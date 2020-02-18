@@ -1,6 +1,10 @@
 import * as Actions from "./post.actions";
 import { postTypes } from "../consts";
-import { getProtectedData, putProtectedData } from "./data.creators";
+import {
+  getProtectedData,
+  putProtectedData,
+  postProtectedData
+} from "./data.creators";
 
 export function retreivePosts() {
   return getProtectedData(
@@ -27,5 +31,15 @@ export function updatePost(uuid, data) {
     ["profile", "idToken"],
     Actions.updatePostsSuccess,
     Actions.updatePostsFailure
+  );
+}
+
+export function createPost(data) {
+  return postProtectedData(
+    postTypes.POSTS_API.CREATE_POST_URL(),
+    data,
+    ["profile", "idToken"],
+    Actions.createPostsSuccess,
+    Actions.createPostsFailure
   );
 }

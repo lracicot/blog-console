@@ -42,3 +42,17 @@ export function updatePostsFailure(error) {
     error: fromJS(error)
   };
 }
+
+export function createPostsSuccess(post) {
+  return {
+    type: Action.CREATE_POST_SUCCESS,
+    data: fromJS(post)
+  };
+}
+
+export function createPostsFailure(error) {
+  return {
+    type: Action.CREATE_POST_FAILURE,
+    error: fromJS(error)
+  };
+}

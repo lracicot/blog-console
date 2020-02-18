@@ -29,7 +29,6 @@ class Editor extends React.Component {
     }
   }
   save(data) {
-    console.log(data);
     this.props.updatePost(this.state.postUuid, {
       content: data,
       title: "Test 3"

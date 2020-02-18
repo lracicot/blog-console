@@ -24,6 +24,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 
+import AddPostModal from "../../Post/AddPostModal";
 import Error from "../../FlashMessage/Error";
 
 const drawerWidth = 300;
@@ -106,7 +107,7 @@ const Header = props => {
     setAnchorEl(null);
   };
 
-  const { error, posts } = props;
+  const { error, posts, createPost } = props;
 
   return (
     <React.Fragment>
@@ -193,10 +194,26 @@ const Header = props => {
           </ListItem>
         </List>
         <Divider />
+        <AddPostModal createPost={createPost}>
+          <ListItem button>
+            <ListItemText
+              className={classes.link}
+              classes={{
+                primary: classes.linkPrimary
+              }}
+              primary="New post"
+            />
+          </ListItem>
+        </AddPostModal>
+        <Divider />
         <List>
           {posts.map(post => (
             <ListItem button key={post.uuid}>
-              <NavLink to={`/post/${post.uuid}/edit`} className={classes.link}>
+              <NavLink
+                to={`/post/${post.uuid}/edit`}
+                className={classes.link}
+                onClick={handleDrawerClose}
+              >
                 <ListItemText
                   classes={{
                     primary: classes.linkPrimary,
@@ -218,8 +235,8 @@ const Header = props => {
 Header.propTypes = {
   styles: PropTypes.object,
   handleChangeRequestNavDrawer: PropTypes.func,
-  actions: PropTypes.any,
-  appStore: PropTypes.any,
+  createPost: PropTypes.func,
+  // appStore: PropTypes.any,
   error: PropTypes.string,
   posts: PropTypes.array
 };
