@@ -1,9 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import React from "react";
+import slugify from "slugify";
+
+import PropTypes from "prop-types";
+
 import Header from "../../components/Layout/Header";
 import * as actionCreators from "../../actions/post.creators";
-import slugify from "slugify";
 
 class Layout extends React.Component {
   componentDidMount() {
@@ -17,7 +19,11 @@ class Layout extends React.Component {
     });
   }
   render() {
-    const { children, error, data } = this.props;
+    const { children, error, data, redirect } = this.props;
+
+    // if (redirect) {
+    //   return <Redirect to={redirect} />;
+    // }
     return (
       <div className="layout">
         <Header
