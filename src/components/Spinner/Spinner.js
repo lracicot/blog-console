@@ -5,7 +5,7 @@ import React from "react";
 
 const useStyles = makeStyles(theme => ({
   progress: {
-    margin: theme.spacing(20)
+    margin: theme.spacing(15)
   }
 }));
 
