@@ -25,13 +25,18 @@ export function retreivePost(uuid) {
 }
 
 export function updatePost(uuid, data) {
-  return putProtectedData(
-    postTypes.POSTS_API.UPDATE_POST_URL(uuid),
-    data,
-    ["profile", "idToken"],
-    Actions.updatePostsSuccess,
-    Actions.updatePostsFailure
-  );
+  return dispatch => {
+    dispatch(Actions.updatePostsRequest(uuid));
+    dispatch(
+      putProtectedData(
+        postTypes.POSTS_API.UPDATE_POST_URL(uuid),
+        data,
+        ["profile", "idToken"],
+        Actions.updatePostsSuccess,
+        Actions.updatePostsFailure
+      )
+    );
+  };
 }
 
 export function createPost(data) {
@@ -52,17 +57,24 @@ export function publishPost(uuid) {
         postTypes.POSTS_API.PUBLISH_POST_URL(uuid),
         {},
         ["profile", "idToken"],
-        Actions.publishPostsSuccess
+        Actions.publishPostsSuccess,
+        Actions.publishPostsFailure
       )
     );
   };
 }
 
 export function archivePost(uuid) {
-  return postProtectedData(
-    postTypes.POSTS_API.ARCHIVE_POST_URL(uuid),
-    {},
-    ["profile", "idToken"],
-    Actions.archivePostsSuccess
-  );
+  return dispatch => {
+    dispatch(Actions.archivePostsRequest(uuid));
+    dispatch(
+      postProtectedData(
+        postTypes.POSTS_API.ARCHIVE_POST_URL(uuid),
+        {},
+        ["profile", "idToken"],
+        Actions.archivePostsSuccess,
+        Actions.archivePostsFailure
+      )
+    );
+  };
 }

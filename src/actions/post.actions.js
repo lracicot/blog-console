@@ -29,6 +29,13 @@ export function retreivePostFailure(error) {
   };
 }
 
+export function updatePostsRequest(uuid) {
+  return {
+    type: Action.UPDATE_POST_REQUEST,
+    data: uuid
+  };
+}
+
 export function updatePostsSuccess(posts) {
   return {
     type: Action.UPDATE_POST_SUCCESS,
@@ -71,9 +78,30 @@ export function publishPostsSuccess(post) {
   };
 }
 
+export function publishPostsFailure(error) {
+  return {
+    type: Action.PUBLISH_POST_FAILURE,
+    error: fromJS(error)
+  };
+}
+
+export function archivePostsRequest(uuid) {
+  return {
+    type: Action.ARCHIVE_POST_REQUEST,
+    data: uuid
+  };
+}
+
 export function archivePostsSuccess(post) {
   return {
     type: Action.ARCHIVE_POST_SUCCESS,
     data: fromJS(post)
+  };
+}
+
+export function archivePostsFailure(error) {
+  return {
+    type: Action.ARCHIVE_POST_FAILURE,
+    error: fromJS(error)
   };
 }

@@ -65,6 +65,8 @@ const EditPostForm = props => {
   const classes = useStyles();
   const {
     isPublishing,
+    isArchiving,
+    isSaving,
     handleSubmit,
     handlePublish,
     handleArchive,
@@ -90,6 +92,7 @@ const EditPostForm = props => {
         variant="contained"
         color="secondary"
         onClick={handleArchive}
+        disabled={isArchiving}
       >
         Archive
       </Button>
@@ -102,7 +105,7 @@ const EditPostForm = props => {
           type="submit"
           variant="contained"
           color="primary"
-          disabled={pristine || submitting}
+          disabled={pristine || submitting || isSaving}
         >
           Save
         </Button>
@@ -149,6 +152,8 @@ const EditPostForm = props => {
 
 EditPostForm.propTypes = {
   isPublishing: PropTypes.bool,
+  isArchiving: PropTypes.bool,
+  isSaving: PropTypes.bool,
   handleSubmit: PropTypes.func,
   handlePublish: PropTypes.func,
   handleArchive: PropTypes.func,
