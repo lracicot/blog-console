@@ -52,6 +52,7 @@ renderEditor.propTypes = {
 const EditPostForm = props => {
   const classes = useStyles();
   const { handleSubmit, pristine, reset, submitting, initialValues } = props;
+  console.log(initialValues.toJS());
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.formControl}>

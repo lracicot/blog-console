@@ -46,11 +46,7 @@ class EditPost extends React.Component {
     if (data) {
       return (
         <Container maxWidth="md" className={classes.formContainer}>
-          <EditPostForm
-            initialValues={data}
-            onSubmit={this.save.bind(this)}
-            key={data.slug}
-          />
+          <EditPostForm initialValues={data} onSubmit={this.save.bind(this)} />
         </Container>
       );
     } else {
