@@ -52,8 +52,19 @@ class EditPost extends React.Component {
     this.props.publishPost(this.state.postUuid);
   }
 
+  handleDelete() {
+    this.props.deletePost(this.state.postUuid);
+  }
+
   render() {
-    const { data, classes, isPublishing, isArchiving, isSaving } = this.props;
+    const {
+      data,
+      classes,
+      isPublishing,
+      isArchiving,
+      isSaving,
+      isDeleting
+    } = this.props;
     if (data) {
       return (
         <Container maxWidth="md" className={classes.formContainer}>
@@ -62,8 +73,10 @@ class EditPost extends React.Component {
             onSubmit={this.save.bind(this)}
             handleArchive={this.handleArchive.bind(this)}
             handlePublish={this.handlePublish.bind(this)}
+            handleDelete={this.handleDelete.bind(this)}
             isPublishing={isPublishing}
             isArchiving={isArchiving}
+            isDeleting={isDeleting}
             isSaving={isSaving}
           />
         </Container>
@@ -78,11 +91,13 @@ EditPost.propTypes = {
   data: PropTypes.any,
   isPublishing: PropTypes.bool,
   isArchiving: PropTypes.bool,
+  isDeleting: PropTypes.bool,
   isSaving: PropTypes.bool,
   retreivePost: PropTypes.func,
   archivePost: PropTypes.func,
   publishPost: PropTypes.func,
   updatePost: PropTypes.func,
+  deletePost: PropTypes.func,
   match: PropTypes.object,
   classes: PropTypes.object
 };
@@ -100,6 +115,9 @@ function mapStateToProps(state) {
       : false,
     isSaving: state.hasIn(["app", "isSaving"])
       ? state.getIn(["app", "isSaving"])
+      : false,
+    isDeleting: state.hasIn(["app", "isDeleting"])
+      ? state.getIn(["app", "isDeleting"])
       : false
   };
 }

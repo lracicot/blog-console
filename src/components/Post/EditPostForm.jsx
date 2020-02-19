@@ -66,10 +66,12 @@ const EditPostForm = props => {
   const {
     isPublishing,
     isArchiving,
+    isDeleting,
     isSaving,
     handleSubmit,
     handlePublish,
     handleArchive,
+    handleDelete,
     pristine,
     submitting,
     initialValues
@@ -110,6 +112,15 @@ const EditPostForm = props => {
           Save
         </Button>
         {actionButton}
+        <Button
+          type="button"
+          variant="contained"
+          color="secondary"
+          onClick={handleDelete}
+          disabled={isDeleting}
+        >
+          Delete
+        </Button>
       </div>
       <div className={classes.formControl}>
         <Field
@@ -153,10 +164,12 @@ const EditPostForm = props => {
 EditPostForm.propTypes = {
   isPublishing: PropTypes.bool,
   isArchiving: PropTypes.bool,
+  isDeleting: PropTypes.bool,
   isSaving: PropTypes.bool,
   handleSubmit: PropTypes.func,
   handlePublish: PropTypes.func,
   handleArchive: PropTypes.func,
+  handleDelete: PropTypes.func,
   pristine: PropTypes.any,
   reset: PropTypes.func,
   submitting: PropTypes.bool,

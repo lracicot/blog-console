@@ -3,7 +3,8 @@ import { postTypes } from "../consts";
 import {
   getProtectedData,
   putProtectedData,
-  postProtectedData
+  postProtectedData,
+  deleteProtectedData
 } from "./data.creators";
 
 export function retreivePosts() {
@@ -40,13 +41,19 @@ export function updatePost(uuid, data) {
 }
 
 export function createPost(data) {
-  return postProtectedData(
-    postTypes.POSTS_API.CREATE_POST_URL(),
-    data,
-    ["profile", "idToken"],
-    Actions.createPostsSuccess,
-    Actions.createPostsFailure
-  );
+  return dispatch => {
+    dispatch(Actions.createPostsRequest());
+    dispatch(
+      postProtectedData(
+        postTypes.POSTS_API.CREATE_POST_URL(),
+        data,
+        ["profile", "idToken"],
+        Actions.createPostsSuccess,
+        Actions.createPostsFailure,
+        data => `/post/${data.uuid}/edit`
+      )
+    );
+  };
 }
 
 export function publishPost(uuid) {
@@ -74,6 +81,22 @@ export function archivePost(uuid) {
         ["profile", "idToken"],
         Actions.archivePostsSuccess,
         Actions.archivePostsFailure
+      )
+    );
+  };
+}
+
+export function deletePost(uuid) {
+  return dispatch => {
+    dispatch(Actions.deletePostsRequest(uuid));
+    dispatch(
+      deleteProtectedData(
+        postTypes.POSTS_API.DELETE_POST_URL(uuid),
+        {},
+        ["profile", "idToken"],
+        Actions.deletePostsSuccess,
+        Actions.deletePostsFailure,
+        () => `/`
       )
     );
   };

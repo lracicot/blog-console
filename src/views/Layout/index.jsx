@@ -19,17 +19,15 @@ class Layout extends React.Component {
     });
   }
   render() {
-    const { children, error, data, redirect } = this.props;
+    const { children, error, data, isCreating } = this.props;
 
-    // if (redirect) {
-    //   return <Redirect to={redirect} />;
-    // }
     return (
       <div className="layout">
         <Header
           error={error}
           posts={data}
           createPost={this.createPost.bind(this)}
+          isCreating={isCreating}
         />
         {children}
       </div>
@@ -42,7 +40,8 @@ Layout.propTypes = {
   error: PropTypes.string,
   data: PropTypes.array,
   retreivePosts: PropTypes.func,
-  createPost: PropTypes.func
+  createPost: PropTypes.func,
+  isCreating: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -50,7 +49,10 @@ function mapStateToProps(state) {
     data: state.hasIn(["app", "posts"])
       ? state.getIn(["app", "posts"]).toJS()
       : [],
-    error: state.hasIn(["app", "error"]) ? state.getIn(["app", "error"]) : ""
+    error: state.hasIn(["app", "error"]) ? state.getIn(["app", "error"]) : "",
+    isCreating: state.hasIn(["app", "isCreating"])
+      ? state.getIn(["app", "isCreating"])
+      : false
   };
 }
 

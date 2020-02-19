@@ -2,7 +2,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
-import React from "react";
+import React, { useRef, useEffect } from "react";
+
 import PropTypes from "prop-types";
 
 import AddPostForm from "./AddPostForm";
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center"
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "#ffffff",
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3)
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 const FormModal = props => {
   const classes = useStyles();
-  const { children, createPost } = props;
+  const { children, createPost, isCreating } = props;
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -33,6 +34,17 @@ const FormModal = props => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const prevIsCreatingRef = useRef();
+  useEffect(() => {
+    prevIsCreatingRef.current = isCreating;
+  });
+  let prevIsCreating = prevIsCreatingRef.current;
+
+  if (prevIsCreating && !isCreating) {
+    prevIsCreatingRef.current = false;
+    handleClose();
+  }
 
   return (
     <div>
@@ -50,7 +62,9 @@ const FormModal = props => {
         }}
       >
         <Fade in={open}>
-          <AddPostForm onSubmit={createPost} />
+          <div className={classes.paper}>
+            <AddPostForm onSubmit={createPost} isCreating={isCreating} />
+          </div>
         </Fade>
       </Modal>
     </div>
@@ -59,7 +73,8 @@ const FormModal = props => {
 
 FormModal.propTypes = {
   children: PropTypes.node,
-  createPost: PropTypes.func.isRequired
+  createPost: PropTypes.func.isRequired,
+  isCreating: PropTypes.bool
 };
 
 export default FormModal;

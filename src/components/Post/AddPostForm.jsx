@@ -1,3 +1,4 @@
+import { Button, InputAdornment } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
@@ -16,7 +17,8 @@ renderTextField.propTypes = {
 };
 
 const AddPostForm = props => {
-  const { handleSubmit, pristine, submitting } = props;
+  const { handleSubmit, pristine, submitting, isCreating } = props;
+  console.log(isCreating);
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -26,12 +28,21 @@ const AddPostForm = props => {
           component={renderTextField}
           label="Title"
           variant="outlined"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={pristine || submitting || isCreating}
+                >
+                  Create
+                </Button>
+              </InputAdornment>
+            )
+          }}
         />
-      </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting}>
-          Submit
-        </button>
       </div>
     </form>
   );
@@ -40,7 +51,8 @@ const AddPostForm = props => {
 AddPostForm.propTypes = {
   handleSubmit: PropTypes.func,
   pristine: PropTypes.any,
-  submitting: PropTypes.bool
+  submitting: PropTypes.bool,
+  isCreating: PropTypes.bool
 };
 
 export default reduxForm({

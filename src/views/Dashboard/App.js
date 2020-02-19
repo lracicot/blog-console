@@ -1,11 +1,7 @@
 import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header"></header>
-    </div>
-  );
+function Dashboard() {
+  return <div></div>;
 }
 
-export default App;
+export default Dashboard;

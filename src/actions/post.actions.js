@@ -50,6 +50,12 @@ export function updatePostsFailure(error) {
   };
 }
 
+export function createPostsRequest() {
+  return {
+    type: Action.CREATE_POST_REQUEST
+  };
+}
+
 export function createPostsSuccess(post) {
   return {
     type: Action.CREATE_POST_SUCCESS,
@@ -102,6 +108,27 @@ export function archivePostsSuccess(post) {
 export function archivePostsFailure(error) {
   return {
     type: Action.ARCHIVE_POST_FAILURE,
+    error: fromJS(error)
+  };
+}
+
+export function deletePostsRequest(uuid) {
+  return {
+    type: Action.DELETE_POST_REQUEST,
+    data: uuid
+  };
+}
+
+export function deletePostsSuccess(post) {
+  return {
+    type: Action.DELETE_POST_SUCCESS,
+    data: fromJS(post)
+  };
+}
+
+export function deletePostsFailure(error) {
+  return {
+    type: Action.DELETE_POST_FAILURE,
     error: fromJS(error)
   };
 }

@@ -11,6 +11,19 @@ export default function(state = Map(), action) {
   switch (action.type) {
     case "SET_STATE":
       return setState(state, action.state);
+    case postAction.CREATE_POST_REQUEST:
+      return state.merge({
+        isCreating: true
+      });
+    case postAction.CREATE_POST_FAILURE:
+      return state.merge({
+        isCreating: false,
+        error: action.error.toString()
+      });
+    case postAction.CREATE_POST_SUCCESS:
+      return state.merge({
+        isCreating: false
+      });
     case postAction.RETREIVE_POSTS_SUCCESS:
       return state.set(
         "posts",
@@ -31,10 +44,7 @@ export default function(state = Map(), action) {
         })
       );
     case postAction.RETREIVE_POSTS_FAILURE:
-      return {
-        ...state,
-        ...{ error: action.error.toString() }
-      };
+      return state.merge({ error: action.error.toString() });
     case postAction.RETREIVE_POST_SUCCESS:
       return state.set(
         "currentPost",
@@ -42,6 +52,8 @@ export default function(state = Map(), action) {
           ? action.data.set("content", JSON.parse(action.data.get("content")))
           : action.data
       );
+    case postAction.RETREIVE_POST_FAILURE:
+      return state.merge({ error: action.error.toString() });
     case postAction.UPDATE_POST_REQUEST:
       return state.merge({
         isSaving: true
@@ -61,7 +73,8 @@ export default function(state = Map(), action) {
       });
     case postAction.UPDATE_POST_FAILURE:
       return state.merge({
-        isSaving: false
+        isSaving: false,
+        error: action.error.toString()
       });
     case postAction.PUBLISH_POST_REQUEST:
       return state.merge({
@@ -82,7 +95,8 @@ export default function(state = Map(), action) {
       });
     case postAction.PUBLISH_POST_FAILURE:
       return state.merge({
-        isPublishing: false
+        isPublishing: false,
+        error: action.error.toString()
       });
     case postAction.ARCHIVE_POST_REQUEST:
       return state.merge({
@@ -103,13 +117,22 @@ export default function(state = Map(), action) {
       });
     case postAction.ARCHIVE_POST_FAILURE:
       return state.merge({
-        isArchiving: false
+        isArchiving: false,
+        error: action.error.toString()
       });
-    case postAction.RETREIVE_POST_FAILURE:
-      return {
-        ...state,
-        ...{ error: action.error.toString() }
-      };
+    case postAction.DELETE_POST_REQUEST:
+      return state.merge({
+        isDeleting: true
+      });
+    case postAction.DELETE_POST_SUCCESS:
+      return state.merge({
+        isDeleting: false
+      });
+    case postAction.DELETE_POST_FAILURE:
+      return state.merge({
+        isDeleting: false,
+        error: action.error.toString()
+      });
     default:
       return state;
   }

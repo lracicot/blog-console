@@ -120,7 +120,7 @@ const Header = props => {
     setAnchorEl(null);
   };
 
-  const { error, posts, createPost } = props;
+  const { error, posts, createPost, isCreating } = props;
 
   return (
     <React.Fragment>
@@ -195,7 +195,11 @@ const Header = props => {
         <Divider />
         <List>
           <ListItem button key="dashboard">
-            <NavLink to="/" className={classes.link}>
+            <NavLink
+              to="/"
+              className={classes.link}
+              onClick={handleDrawerClose}
+            >
               <ListItemText
                 classes={{
                   primary: classes.linkPrimary,
@@ -207,8 +211,8 @@ const Header = props => {
           </ListItem>
         </List>
         <Divider />
-        <AddPostModal createPost={createPost}>
-          <ListItem button>
+        <AddPostModal createPost={createPost} isCreating={isCreating}>
+          <ListItem button onClick={handleDrawerClose}>
             <ListItemIcon>
               <Add className={classes.lightIcon} />
             </ListItemIcon>
@@ -264,6 +268,7 @@ Header.propTypes = {
   styles: PropTypes.object,
   handleChangeRequestNavDrawer: PropTypes.func,
   createPost: PropTypes.func,
+  isCreating: PropTypes.bool,
   // appStore: PropTypes.any,
   error: PropTypes.string,
   posts: PropTypes.array

@@ -1,4 +1,5 @@
 import Axios from "axios";
+import history from "../history";
 /* eslint-disable func-style */
 /* eslint-disable max-params */
 
@@ -37,7 +38,8 @@ export function requestData(
   data,
   onSuccess,
   onFailure,
-  tokenPath = null
+  tokenPath = null,
+  redirect = null
 ) {
   return (dispatch, getState) => {
     try {
@@ -57,7 +59,11 @@ export function requestData(
         headers
       })
         .then(res => {
-          return dispatch(onSuccess(res.data));
+          const action = dispatch(onSuccess(res.data));
+          if (redirect) {
+            history.push(redirect(res.data));
+          }
+          return action;
         })
         .catch(error => {
           console.log(error);
@@ -69,29 +75,69 @@ export function requestData(
   };
 }
 
-export function getData(url, onSuccess, onFailure = requestDataFailure) {
-  return requestData(url, "get", null, onSuccess, onFailure);
+export function getData(
+  url,
+  onSuccess,
+  onFailure = requestDataFailure,
+  redirect = null
+) {
+  return requestData(url, "get", null, onSuccess, onFailure, null, redirect);
 }
 
-export function postData(url, data, onSuccess, onFailure = requestDataFailure) {
-  return requestData(url, "post", data, onSuccess, onFailure);
+export function postData(
+  url,
+  data,
+  onSuccess,
+  onFailure = requestDataFailure,
+  redirect = null
+) {
+  return requestData(url, "post", data, onSuccess, onFailure, null, redirect);
 }
 
-export function deleteData(url, id, onSuccess, onFailure = requestDataFailure) {
-  return requestData(url, "delete", { id }, onSuccess, onFailure);
+export function deleteData(
+  url,
+  id,
+  onSuccess,
+  onFailure = requestDataFailure,
+  redirect = null
+) {
+  return requestData(
+    url,
+    "delete",
+    { id },
+    onSuccess,
+    onFailure,
+    null,
+    redirect
+  );
 }
 
-export function putData(url, data, onSuccess, onFailure = requestDataFailure) {
-  return requestData(url, "put", data, onSuccess, onFailure);
+export function putData(
+  url,
+  data,
+  onSuccess,
+  onFailure = requestDataFailure,
+  redirect = null
+) {
+  return requestData(url, "put", data, onSuccess, onFailure, null, redirect);
 }
 
 export function getProtectedData(
   url,
   tokenPath,
   onSuccess,
-  onFailure = requestDataFailure
+  onFailure = requestDataFailure,
+  redirect = null
 ) {
-  return requestData(url, "get", null, onSuccess, onFailure, tokenPath);
+  return requestData(
+    url,
+    "get",
+    null,
+    onSuccess,
+    onFailure,
+    tokenPath,
+    redirect
+  );
 }
 
 export function postProtectedData(
@@ -99,9 +145,18 @@ export function postProtectedData(
   data,
   tokenPath,
   onSuccess,
-  onFailure = requestDataFailure
+  onFailure = requestDataFailure,
+  redirect = null
 ) {
-  return requestData(url, "post", data, onSuccess, onFailure, tokenPath);
+  return requestData(
+    url,
+    "post",
+    data,
+    onSuccess,
+    onFailure,
+    tokenPath,
+    redirect
+  );
 }
 
 export function putProtectedData(
@@ -109,7 +164,35 @@ export function putProtectedData(
   data,
   tokenPath,
   onSuccess,
-  onFailure = requestDataFailure
+  onFailure = requestDataFailure,
+  redirect = null
 ) {
-  return requestData(url, "put", data, onSuccess, onFailure, tokenPath);
+  return requestData(
+    url,
+    "put",
+    data,
+    onSuccess,
+    onFailure,
+    tokenPath,
+    redirect
+  );
+}
+
+export function deleteProtectedData(
+  url,
+  data,
+  tokenPath,
+  onSuccess,
+  onFailure = requestDataFailure,
+  redirect = null
+) {
+  return requestData(
+    url,
+    "delete",
+    data,
+    onSuccess,
+    onFailure,
+    tokenPath,
+    redirect
+  );
 }

@@ -1,7 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { ThemeProvider } from "styled-components";
 import { withOAuth } from "aws-amplify-react";
+import React from "react";
+
+import PropTypes from "prop-types";
+
 import Spinner from "../components/Spinner/Spinner";
+import theme from "../themes/theme";
 
 class App extends React.Component {
   getCode(location) {
@@ -25,7 +29,11 @@ class App extends React.Component {
   }
 
   render() {
-    return <Spinner />;
+    return (
+      <ThemeProvider theme={theme}>
+        <Spinner />
+      </ThemeProvider>
+    );
   }
 }
 
