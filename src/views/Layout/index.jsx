@@ -4,13 +4,31 @@ import slugify from "slugify";
 
 import PropTypes from "prop-types";
 
-import Header from "../../components/Layout/Header";
+import HeaderBar from "../../components/Layout/Header/HeaderBar";
+import Menu from "../../components/Layout/Menu/Menu";
+import Error from "../../components/FlashMessage/Error";
 import * as actionCreators from "../../actions/post.creators";
 
 class Layout extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMenuOpened: false
+    };
+  }
+
+  handleMenuOpen() {
+    this.setState({ isMenuOpened: true });
+  }
+
+  handleMenuClose() {
+    this.setState({ isMenuOpened: false });
+  }
+
   componentDidMount() {
     this.props.retreivePosts();
   }
+
   createPost(data) {
     const jsData = data.toJS();
     this.props.createPost({
@@ -18,16 +36,28 @@ class Layout extends React.Component {
       slug: slugify(jsData.title).toLowerCase()
     });
   }
+
   render() {
-    const { children, error, data, isCreating } = this.props;
+    const { children, error, posts, isCreatingPost } = this.props;
+    const { isMenuOpened } = this.state;
 
     return (
       <div className="layout">
-        <Header
-          error={error}
-          posts={data}
+        {error !== "" && error ? (
+          <Error open={true} message={error} />
+        ) : (
+          <div />
+        )}
+        <HeaderBar
+          handleMenuOpen={this.handleMenuOpen.bind(this)}
+          isMenuOpened={isMenuOpened}
+        />
+        <Menu
+          posts={posts}
+          handleClose={this.handleMenuClose.bind(this)}
+          isOpened={isMenuOpened}
           createPost={this.createPost.bind(this)}
-          isCreating={isCreating}
+          isCreatingPost={isCreatingPost}
         />
         {children}
       </div>
@@ -38,19 +68,19 @@ class Layout extends React.Component {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   error: PropTypes.string,
-  data: PropTypes.array,
+  posts: PropTypes.array,
   retreivePosts: PropTypes.func,
   createPost: PropTypes.func,
-  isCreating: PropTypes.bool
+  isCreatingPost: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
-    data: state.hasIn(["app", "posts"])
+    posts: state.hasIn(["app", "posts"])
       ? state.getIn(["app", "posts"]).toJS()
       : [],
     error: state.hasIn(["app", "error"]) ? state.getIn(["app", "error"]) : "",
-    isCreating: state.hasIn(["app", "isCreating"])
+    isCreatingPost: state.hasIn(["app", "isCreating"])
       ? state.getIn(["app", "isCreating"])
       : false
   };
