@@ -1,9 +1,11 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+
 import PropTypes from "prop-types";
 
+import LoadingButton from "../Button/LoadingButton";
 import PostEditor from "../PostEditor";
 
 const useStyles = makeStyles(theme => ({
@@ -35,13 +37,7 @@ const useStyles = makeStyles(theme => ({
 //   return errors;
 // };
 
-const renderTextField = ({
-  input,
-  meta: { touched, error }, // eslint-disable-line
-  children,
-  // formatter = v => v,
-  ...custom
-}) => (
+const renderTextField = ({ input, children, ...custom }) => (
   <TextField {...input} {...custom}>
     {children}
   </TextField>
@@ -78,25 +74,27 @@ const EditPostForm = props => {
 
   const actionButton =
     initialValues.get("status") !== "published" ? (
-      <Button
+      <LoadingButton
         type="button"
         variant="contained"
         color="secondary"
         onClick={handlePublish}
+        isLoading={isPublishing}
         disabled={isPublishing}
       >
         Publish
-      </Button>
+      </LoadingButton>
     ) : (
-      <Button
+      <LoadingButton
         type="button"
         variant="contained"
         color="secondary"
         onClick={handleArchive}
+        isLoading={isArchiving}
         disabled={isArchiving}
       >
         Archive
-      </Button>
+      </LoadingButton>
     );
 
   const deleteAction = () => {
@@ -108,24 +106,23 @@ const EditPostForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.buttonGroup}>
-        <Button
+        <LoadingButton
           type="submit"
-          variant="contained"
           color="primary"
-          disabled={pristine || submitting || isSaving}
+          isLoading={isSaving}
+          disabled={pristine || submitting}
+          isDone={pristine}
         >
-          Save
-        </Button>
+          {pristine ? "Saved" : "Save"}
+        </LoadingButton>
         {actionButton}
-        <Button
-          type="button"
-          variant="contained"
-          color="secondary"
+        <LoadingButton
           onClick={deleteAction}
+          isLoading={isDeleting}
           disabled={isDeleting || initialValues.get("status") === "published"}
         >
           Delete
-        </Button>
+        </LoadingButton>
       </div>
       <div className={classes.formControl}>
         <Field
