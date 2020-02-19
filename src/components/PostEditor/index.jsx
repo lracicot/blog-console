@@ -32,17 +32,18 @@ const defaultProps = {
 
 const PostEditor = props => {
   // const classes = useStyles();
+  const { value, onChange, disabled } = props;
   let initialEditorState = EditorState.createEmpty();
-  if (props.value) {
+  if (value) {
     initialEditorState = EditorState.createWithContent(
-      convertFromRaw(props.value.toJS())
+      convertFromRaw(value.toJS())
     );
   }
   const [editorState, setEditorState] = React.useState(initialEditorState);
 
   const handleChange = editorState => {
     setEditorState(editorState);
-    props.onChange(fromJS(convertToRaw(editorState.getCurrentContent())));
+    onChange(fromJS(convertToRaw(editorState.getCurrentContent())));
   };
   const _onBoldClick = () => {
     handleChange(RichUtils.toggleInlineStyle(editorState, "BOLD"));
@@ -54,6 +55,7 @@ const PostEditor = props => {
       <Box borderRadius="borderRadius" {...defaultProps}>
         <Editor
           editorState={editorState}
+          readOnly={disabled}
           // onChange={setEditorState}
           onChange={editorState => handleChange(editorState)}
         />
@@ -61,10 +63,14 @@ const PostEditor = props => {
     </div>
   );
 };
+PostEditor.defaultProps = {
+  disabled: false
+};
 
 PostEditor.propTypes = {
   value: PropTypes.any,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 export default PostEditor;

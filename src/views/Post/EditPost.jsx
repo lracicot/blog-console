@@ -37,7 +37,7 @@ class EditPost extends React.Component {
   }
 
   save(data) {
-    const jsData = data.toJS();
+    const jsData = data.delete("updated_at").toJS();
     this.props.updatePost(this.state.postUuid, {
       ...jsData,
       content: JSON.stringify(jsData.content)

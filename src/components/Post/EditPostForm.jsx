@@ -1,7 +1,8 @@
-import { makeStyles } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
+import { Typography, makeStyles } from "@material-ui/core";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import moment from "moment";
 
 import PropTypes from "prop-types";
 
@@ -16,6 +17,10 @@ const useStyles = makeStyles(theme => ({
     fontSize: 35
   },
   smallInput: {
+    fontSize: 12,
+    color: "#888888"
+  },
+  helperText: {
     fontSize: 12,
     color: "#888888"
   },
@@ -80,7 +85,7 @@ const EditPostForm = props => {
         color="secondary"
         onClick={handlePublish}
         isLoading={isPublishing}
-        disabled={isPublishing}
+        disabled={isPublishing || !pristine}
       >
         Publish
       </LoadingButton>
@@ -91,7 +96,7 @@ const EditPostForm = props => {
         color="secondary"
         onClick={handleArchive}
         isLoading={isArchiving}
-        disabled={isArchiving}
+        disabled={isArchiving || !pristine}
       >
         Archive
       </LoadingButton>
@@ -102,6 +107,8 @@ const EditPostForm = props => {
       handleDelete();
     }
   };
+
+  const formDisabled = isPublishing || isArchiving || isSaving || isDeleting;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -124,11 +131,18 @@ const EditPostForm = props => {
           Delete
         </LoadingButton>
       </div>
+      <div>
+        <Typography className={classes.helperText} variant="body2">
+          Last save:{" "}
+          {moment(initialValues.get("updated_at")).format("YYYY-MM-DD HH:mm")}
+        </Typography>
+      </div>
       <div className={classes.formControl}>
         <Field
           name="title"
           fullWidth
           component={renderTextField}
+          disabled={formDisabled}
           label="Title"
           InputProps={{
             classes: {
@@ -141,6 +155,7 @@ const EditPostForm = props => {
         <Field
           name="slug"
           component={renderTextField}
+          disabled={formDisabled}
           label="Url"
           variant="outlined"
           InputProps={{
@@ -156,6 +171,7 @@ const EditPostForm = props => {
         <Field
           name="content"
           component={renderEditor}
+          disabled={formDisabled}
           key={initialValues.get("uuid")}
         />
       </div>
