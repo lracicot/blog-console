@@ -119,9 +119,10 @@ export function deletePostsRequest(uuid) {
   };
 }
 
-export function deletePostsSuccess() {
+export function deletePostsSuccess(post) {
   return {
-    type: Action.DELETE_POST_SUCCESS
+    type: Action.DELETE_POST_SUCCESS,
+    data: fromJS(post)
   };
 }
 

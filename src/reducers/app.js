@@ -5,9 +5,32 @@ import moment from "moment";
 function setState(state = Map(), newState) {
   return state.merge(fromJS(newState));
 }
+const sortPostOrder = fromJS(["draft", "published", "archived"]);
+
+const sortPosts = posts =>
+  posts.sort((post1, post2) => {
+    if (
+      sortPostOrder.findIndex(status => status === post1.get("status")) <
+      sortPostOrder.findIndex(status => status === post2.get("status"))
+    )
+      return -1;
+    if (
+      sortPostOrder.findIndex(status => status === post1.get("status")) >
+      sortPostOrder.findIndex(status => status === post2.get("status"))
+    )
+      return 1;
+    if (moment(post1.get("created_at")).isAfter(post2.get("created_at")))
+      return -1;
+    else return 1;
+  });
+
+const updatePost = (posts, postData) =>
+  posts.update(
+    posts.findIndex(item => item.get("uuid") === postData.get("uuid")),
+    () => postData
+  );
 
 export default function(state = Map(), action) {
-  const sortOrder = fromJS(["draft", "published", "archived"]);
   switch (action.type) {
     case "SET_STATE":
       return setState(state, action.state);
@@ -22,27 +45,11 @@ export default function(state = Map(), action) {
       });
     case postAction.CREATE_POST_SUCCESS:
       return state.merge({
-        isCreating: false
+        isCreating: false,
+        posts: sortPosts(state.get("posts").push(action.data))
       });
     case postAction.RETREIVE_POSTS_SUCCESS:
-      return state.set(
-        "posts",
-        action.data.sort((post1, post2) => {
-          if (
-            sortOrder.findIndex(status => status === post1.get("status")) <
-            sortOrder.findIndex(status => status === post2.get("status"))
-          )
-            return -1;
-          if (
-            sortOrder.findIndex(status => status === post1.get("status")) >
-            sortOrder.findIndex(status => status === post2.get("status"))
-          )
-            return 1;
-          if (moment(post1.get("created_at")).isAfter(post2.get("created_at")))
-            return -1;
-          else return 1;
-        })
-      );
+      return state.set("posts", sortPosts(action.data));
     case postAction.RETREIVE_POSTS_FAILURE:
       return state.merge({ error: action.error.toString() });
     case postAction.RETREIVE_POST_SUCCESS:
@@ -64,12 +71,7 @@ export default function(state = Map(), action) {
         currentPost: action.data.has("content")
           ? action.data.set("content", JSON.parse(action.data.get("content")))
           : action.data,
-        posts: state.get("posts").update(
-          state
-            .get("posts")
-            .findIndex(item => item.get("uuid") === action.data.get("uuid")),
-          () => action.data
-        )
+        posts: updatePost(state.get("posts"), action.data)
       });
     case postAction.UPDATE_POST_FAILURE:
       return state.merge({
@@ -86,12 +88,7 @@ export default function(state = Map(), action) {
         currentPost: action.data.has("content")
           ? action.data.set("content", JSON.parse(action.data.get("content")))
           : action.data,
-        posts: state.get("posts").update(
-          state
-            .get("posts")
-            .findIndex(item => item.get("uuid") === action.data.get("uuid")),
-          () => action.data
-        )
+        posts: updatePost(state.get("posts"), action.data)
       });
     case postAction.PUBLISH_POST_FAILURE:
       return state.merge({
@@ -108,12 +105,7 @@ export default function(state = Map(), action) {
         currentPost: action.data.has("content")
           ? action.data.set("content", JSON.parse(action.data.get("content")))
           : action.data,
-        posts: state.get("posts").update(
-          state
-            .get("posts")
-            .findIndex(item => item.get("uuid") === action.data.get("uuid")),
-          () => action.data
-        )
+        posts: updatePost(state.get("posts"), action.data)
       });
     case postAction.ARCHIVE_POST_FAILURE:
       return state.merge({
@@ -126,7 +118,14 @@ export default function(state = Map(), action) {
       });
     case postAction.DELETE_POST_SUCCESS:
       return state.merge({
-        isDeleting: false
+        isDeleting: false,
+        posts: state
+          .get("posts")
+          .delete(
+            state
+              .get("posts")
+              .findIndex(item => item.get("uuid") === action.data.get("uuid"))
+          )
       });
     case postAction.DELETE_POST_FAILURE:
       return state.merge({
