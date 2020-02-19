@@ -2,7 +2,6 @@ import { Button, makeStyles } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-
 import PropTypes from "prop-types";
 
 import PostEditor from "../PostEditor";
@@ -100,6 +99,12 @@ const EditPostForm = props => {
       </Button>
     );
 
+  const deleteAction = () => {
+    if (window.confirm("Are you sure?")) {
+      handleDelete();
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className={classes.buttonGroup}>
@@ -116,8 +121,8 @@ const EditPostForm = props => {
           type="button"
           variant="contained"
           color="secondary"
-          onClick={handleDelete}
-          disabled={isDeleting}
+          onClick={deleteAction}
+          disabled={isDeleting || initialValues.get("status") === "published"}
         >
           Delete
         </Button>
