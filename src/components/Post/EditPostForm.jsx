@@ -1,5 +1,11 @@
+import {
+  Divider,
+  Grid,
+  Paper,
+  Typography,
+  makeStyles
+} from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
-import { Typography, makeStyles } from "@material-ui/core";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
@@ -10,6 +16,9 @@ import LoadingButton from "../Button/LoadingButton";
 import PostEditor from "../PostEditor";
 
 const useStyles = makeStyles(theme => ({
+  paper: {
+    padding: theme.spacing(2)
+  },
   formControl: {
     marginTop: "20px"
   },
@@ -27,6 +36,22 @@ const useStyles = makeStyles(theme => ({
   buttonGroup: {
     "& > *": {
       margin: theme.spacing(1)
+    }
+  },
+  rightMenuDivider: {
+    marginTop: 10,
+    marginBottom: 10
+  },
+  mainForm: {
+    order: 2,
+    [theme.breakpoints.up("md")]: {
+      order: 1
+    }
+  },
+  sideBar: {
+    order: 1,
+    [theme.breakpoints.up("md")]: {
+      order: 2
     }
   }
 }));
@@ -112,69 +137,91 @@ const EditPostForm = props => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={classes.buttonGroup}>
-        <LoadingButton
-          type="submit"
-          color="primary"
-          isLoading={isSaving}
-          disabled={pristine || submitting}
-          isDone={pristine}
-        >
-          {pristine ? "Saved" : "Save"}
-        </LoadingButton>
-        {actionButton}
-        <LoadingButton
-          onClick={deleteAction}
-          isLoading={isDeleting}
-          disabled={isDeleting || initialValues.get("status") === "published"}
-        >
-          Delete
-        </LoadingButton>
-      </div>
-      <div>
-        <Typography className={classes.helperText} variant="body2">
-          Last save:{" "}
-          {moment(initialValues.get("updated_at")).format("YYYY-MM-DD HH:mm")}
-        </Typography>
-      </div>
-      <div className={classes.formControl}>
-        <Field
-          name="title"
-          fullWidth
-          component={renderTextField}
-          disabled={formDisabled}
-          label="Title"
-          InputProps={{
-            classes: {
-              input: classes.resize
-            }
-          }}
-        />
-      </div>
-      <div className={classes.formControl}>
-        <Field
-          name="slug"
-          component={renderTextField}
-          disabled={formDisabled}
-          label="Url"
-          variant="outlined"
-          InputProps={{
-            classes: {
-              input: classes.smallInput
-            }
-          }}
-          fullWidth
-          size="small"
-        />
-      </div>
-      <div className={classes.formControl}>
-        <Field
-          name="content"
-          component={renderEditor}
-          disabled={formDisabled}
-          key={initialValues.get("uuid")}
-        />
-      </div>
+      <Grid container spacing={3} justify="center">
+        <Grid item xs={12} md={7} className={classes.mainForm}>
+          <Paper className={classes.paper}>
+            <div className={classes.formControl}>
+              <Field
+                name="title"
+                fullWidth
+                component={renderTextField}
+                disabled={formDisabled}
+                label="Title"
+                InputProps={{
+                  classes: {
+                    input: classes.resize
+                  }
+                }}
+              />
+            </div>
+            <div className={classes.formControl}>
+              <Field
+                name="slug"
+                component={renderTextField}
+                disabled={formDisabled}
+                label="Url"
+                variant="outlined"
+                InputProps={{
+                  classes: {
+                    input: classes.smallInput
+                  }
+                }}
+                fullWidth
+                size="small"
+              />
+            </div>
+            <div className={classes.formControl}>
+              <Field
+                name="content"
+                component={renderEditor}
+                disabled={formDisabled}
+                key={initialValues.get("uuid")}
+              />
+            </div>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={3} lg={2} className={classes.sideBar}>
+          <Paper className={classes.paper}>
+            <LoadingButton
+              type="submit"
+              color="primary"
+              fullWidth
+              isLoading={isSaving}
+              disabled={pristine || submitting}
+              isDone={pristine}
+            >
+              {pristine ? "Saved" : "Save"}
+            </LoadingButton>
+            <div>
+              <Typography className={classes.helperText} variant="body2">
+                Last save:{" "}
+                {moment(initialValues.get("updated_at")).format(
+                  "YYYY-MM-DD HH:mm"
+                )}
+              </Typography>
+            </div>
+            <Divider className={classes.rightMenuDivider} />
+            Status:{" "}
+            {initialValues
+              .get("status")
+              .charAt(0)
+              .toUpperCase() + initialValues.get("status").slice(1)}
+            <Divider className={classes.rightMenuDivider} />
+            <div className={classes.buttonGroup}>
+              {actionButton}
+              <LoadingButton
+                onClick={deleteAction}
+                isLoading={isDeleting}
+                disabled={
+                  isDeleting || initialValues.get("status") === "published"
+                }
+              >
+                Delete
+              </LoadingButton>
+            </div>
+          </Paper>
+        </Grid>
+      </Grid>
     </form>
   );
 };

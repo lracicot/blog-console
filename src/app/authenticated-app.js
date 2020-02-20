@@ -1,3 +1,4 @@
+import { CssBaseline } from "@material-ui/core";
 import { Router, Route, Redirect, Switch } from "react-router-dom";
 import { ThemeProvider as StyleProvider } from "styled-components";
 import React from "react";
@@ -14,20 +15,23 @@ import theme from "../themes/theme";
 class App extends React.Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <StyleProvider theme={theme}>
-          <Router history={history}>
-            <Layout>
-              <Switch>
-                <Route path="/post/:uuid/edit" component={EditPost} />
-                <Route path="/logout" component={LogoutComponent} />
-                <Route path="/" component={MainComponent} />
-                <Redirect from="/auth" to="/" />
-              </Switch>
-            </Layout>
-          </Router>
-        </StyleProvider>
-      </ThemeProvider>
+      <React.Fragment>
+        <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <StyleProvider theme={theme}>
+            <Router history={history}>
+              <Layout>
+                <Switch>
+                  <Route path="/post/:uuid/edit" component={EditPost} />
+                  <Route path="/logout" component={LogoutComponent} />
+                  <Route path="/" component={MainComponent} />
+                  <Redirect from="/auth" to="/" />
+                </Switch>
+              </Layout>
+            </Router>
+          </StyleProvider>
+        </ThemeProvider>
+      </React.Fragment>
     );
   }
 }

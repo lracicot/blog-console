@@ -10,18 +10,21 @@ import PostLink from "./Links/PostLink";
 
 const drawerWidth = 300;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    backgroundColor: theme.palette.background.menu
   }
 }));
 
 const Menu = props => {
   const classes = useStyles();
+
+  makeStyles(console.log)();
 
   const { posts, createPost, isCreatingPost, handleClose, isOpened } = props;
 
