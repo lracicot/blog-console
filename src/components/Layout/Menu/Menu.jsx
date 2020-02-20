@@ -7,6 +7,7 @@ import DashboardLink from "./Links/DashboardLink";
 import MenuHeader from "./MenuHeader";
 import NewPostButton from "./Links/NewPostButton";
 import PostLink from "./Links/PostLink";
+import AssetsLink from "./Links/AssetsLink";
 
 const drawerWidth = 300;
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 const Menu = props => {
   const classes = useStyles();
 
-  makeStyles(console.log)();
+  // makeStyles(console.log)();
 
   const { posts, createPost, isCreatingPost, handleClose, isOpened } = props;
 
@@ -41,6 +42,8 @@ const Menu = props => {
       <MenuHeader handleClose={handleClose} />
       <Divider />
       <DashboardLink onClick={handleClose} />
+      <Divider />
+      <AssetsLink onClick={handleClose} />
       <Divider />
       <NewPostButton
         createPost={createPost}

@@ -60,6 +60,10 @@ const PostLink = props => {
   );
 };
 
+PostLink.defaultProps = {
+  post: {}
+};
+
 PostLink.propTypes = {
   post: PropTypes.object
 };
