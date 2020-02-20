@@ -7,8 +7,12 @@ import {
 } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
 import React from "react";
+import TagsInput from "react-tagsinput";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
+import { fromJS } from "immutable";
+// import "react-tagsinput/react-tagsinput.css"; // If using WebPack and style-loader.
+import "./tagsinput.css"; // If using WebPack and style-loader.
 
 import PropTypes from "prop-types";
 
@@ -17,7 +21,8 @@ import PostEditor from "../PostEditor";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   formControl: {
     marginTop: "20px"
@@ -36,7 +41,8 @@ const useStyles = makeStyles(theme => ({
   buttonGroup: {
     "& > *": {
       margin: theme.spacing(1)
-    }
+    },
+    marginBottom: 10
   },
   rightMenuDivider: {
     marginTop: 10,
@@ -76,6 +82,27 @@ const renderTextField = ({ input, children, ...custom }) => (
 renderTextField.propTypes = {
   input: PropTypes.any,
   children: PropTypes.any
+};
+
+const renderTagsField = ({ input, placeholder, ...custom }) => {
+  return (
+    <TagsInput
+      onChange={values => {
+        input.onChange(fromJS(values));
+      }}
+      onlyUnique
+      tagProps={{ className: "react-tagsinput-tag info" }}
+      inputProps={{ placeholder: placeholder }}
+      value={typeof input.value === "object" ? input.value.toJS() : []}
+      {...custom}
+    />
+  );
+};
+
+renderTagsField.propTypes = {
+  input: PropTypes.any,
+  value: PropTypes.any,
+  placeholder: PropTypes.string
 };
 
 const renderEditor = ({ input, ...custom }) => {
@@ -134,6 +161,8 @@ const EditPostForm = props => {
   };
 
   const formDisabled = isPublishing || isArchiving || isSaving || isDeleting;
+
+  // console.log(initialValues.get("tags"));
 
   return (
     <form onSubmit={handleSubmit}>
@@ -218,6 +247,23 @@ const EditPostForm = props => {
               >
                 Delete
               </LoadingButton>
+            </div>
+          </Paper>
+          <Paper className={classes.paper}>
+            <Typography component="h5" variant="h5">
+              Tags
+            </Typography>
+            <div className={classes.formControl}>
+              <Field
+                name="tags"
+                label="tags"
+                variant="outlined"
+                suggestions={["patate"]}
+                component={renderTagsField}
+                disabled={formDisabled}
+                fullWidth
+                key={initialValues.get("uuid")}
+              />
             </div>
           </Paper>
         </Grid>
