@@ -58,18 +58,18 @@ class EditPost extends React.Component {
 
   render() {
     const {
-      data,
+      post,
       classes,
       isPublishing,
       isArchiving,
       isSaving,
       isDeleting
     } = this.props;
-    if (data) {
+    if (post) {
       return (
         <Container maxWidth="xl" className={classes.formContainer}>
           <EditPostForm
-            initialValues={data}
+            initialValues={post}
             onSubmit={this.save.bind(this)}
             handleArchive={this.handleArchive.bind(this)}
             handlePublish={this.handlePublish.bind(this)}
@@ -88,7 +88,7 @@ class EditPost extends React.Component {
 }
 
 EditPost.propTypes = {
-  data: PropTypes.any,
+  post: PropTypes.any,
   isPublishing: PropTypes.bool,
   isArchiving: PropTypes.bool,
   isDeleting: PropTypes.bool,
@@ -104,20 +104,20 @@ EditPost.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    data: state.hasIn(["app", "currentPost"])
-      ? state.getIn(["app", "currentPost"]).toJS()
+    post: state.hasIn(["post", "currentPost"])
+      ? state.getIn(["post", "currentPost"]).toJS()
       : null,
-    isPublishing: state.hasIn(["app", "isPublishing"])
-      ? state.getIn(["app", "isPublishing"])
+    isPublishing: state.hasIn(["post", "isPublishing"])
+      ? state.getIn(["post", "isPublishing"])
       : false,
-    isArchiving: state.hasIn(["app", "isArchiving"])
-      ? state.getIn(["app", "isArchiving"])
+    isArchiving: state.hasIn(["post", "isArchiving"])
+      ? state.getIn(["post", "isArchiving"])
       : false,
-    isSaving: state.hasIn(["app", "isSaving"])
-      ? state.getIn(["app", "isSaving"])
+    isSaving: state.hasIn(["post", "isSaving"])
+      ? state.getIn(["post", "isSaving"])
       : false,
-    isDeleting: state.hasIn(["app", "isDeleting"])
-      ? state.getIn(["app", "isDeleting"])
+    isDeleting: state.hasIn(["post", "isDeleting"])
+      ? state.getIn(["post", "isDeleting"])
       : false
   };
 }

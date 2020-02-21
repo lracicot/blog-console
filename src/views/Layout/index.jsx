@@ -76,12 +76,12 @@ Layout.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    posts: state.hasIn(["app", "posts"])
-      ? state.getIn(["app", "posts"]).toJS()
+    posts: state.hasIn(["post", "posts"])
+      ? state.getIn(["post", "posts"]).toJS()
       : [],
     error: state.hasIn(["app", "error"]) ? state.getIn(["app", "error"]) : "",
-    isCreatingPost: state.hasIn(["app", "isCreating"])
-      ? state.getIn(["app", "isCreating"])
+    isCreatingPost: state.hasIn(["post", "isCreating"])
+      ? state.getIn(["post", "isCreating"])
       : false
   };
 }

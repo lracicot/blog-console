@@ -3,6 +3,8 @@ import React from "react";
 
 import PropTypes from "prop-types";
 
+import Spinner from "../../components/Spinner/Spinner";
+import AssetsList from "../../components/Asset/AssetsList";
 import * as actionCreators from "../../actions/asset.creators";
 
 class ListAssets extends React.Component {
@@ -12,13 +14,11 @@ class ListAssets extends React.Component {
 
   render() {
     const { assets } = this.props;
-    return (
-      <div>
-        {assets.map(asset => (
-          <img src={`https://${asset.public_url}`} key={asset.uuid} />
-        ))}
-      </div>
-    );
+    if (assets.length) {
+      return <AssetsList assets={assets} />;
+    } else {
+      return <Spinner />;
+    }
   }
 }
 
@@ -29,8 +29,8 @@ ListAssets.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    assets: state.hasIn(["app", "assets"])
-      ? state.getIn(["app", "assets"]).toJS()
+    assets: state.hasIn(["asset", "assets"])
+      ? state.getIn(["asset", "assets"]).toJS()
       : []
   };
 }

@@ -1,11 +1,9 @@
+import { Button, InputAdornment } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
-import { InputAdornment } from "@material-ui/core";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
 import PropTypes from "prop-types";
-
-import LoadingButton from "../Button/LoadingButton";
 
 const renderTextField = ({ input, children, ...custom }) => (
   <TextField {...input} {...custom}>
@@ -19,11 +17,12 @@ renderTextField.propTypes = {
 };
 
 const AddPostForm = props => {
-  const { handleSubmit, pristine, submitting, isCreating } = props;
+  const { handleSubmit, pristine, submitting, isCreating, asset } = props;
   console.log(isCreating);
   return (
     <form onSubmit={handleSubmit}>
       <div>
+        <img src={`https://${asset.public_url}`} />
         <Field
           name="title"
           fullWidth
@@ -33,15 +32,14 @@ const AddPostForm = props => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <LoadingButton
+                <Button
                   type="submit"
                   variant="contained"
                   color="primary"
-                  isLoading={isCreating}
                   disabled={pristine || submitting || isCreating}
                 >
                   Create
-                </LoadingButton>
+                </Button>
               </InputAdornment>
             )
           }}
@@ -53,7 +51,8 @@ const AddPostForm = props => {
 
 AddPostForm.propTypes = {
   handleSubmit: PropTypes.func,
-  pristine: PropTypes.any,
+  pristine: PropTypes.bool,
+  asset: PropTypes.any,
   submitting: PropTypes.bool,
   isCreating: PropTypes.bool
 };

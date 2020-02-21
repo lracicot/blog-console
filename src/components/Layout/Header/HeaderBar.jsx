@@ -37,8 +37,10 @@ const useStyles = makeStyles(theme => ({
     display: "none"
   },
   link: {
-    color: "#fafafa",
     textDecoration: "none"
+  },
+  accountMenu: {
+    backgroundColor: theme.palette.background.menu
   }
 }));
 
@@ -99,6 +101,7 @@ const HeaderBar = props => {
           }}
           open={myAccountOpen}
           onClose={handleClose}
+          PopoverClasses={classes.accountMenu}
         >
           <MenuItem onClick={handleClose}>
             <NavLink className={classes.link} to="/logout">

@@ -1,36 +1,10 @@
 import Axios from "axios";
 import history from "../history";
-/* eslint-disable func-style */
-/* eslint-disable max-params */
-
-/* * * * * * * * * * * * * * *
- * Actions
- * * * * * * * * * * * * * * */
-
-export function requestDataStart(url) {
-  return {
-    type: "REQUEST_DATA_START",
-    url
-  };
-}
-
-export function requestDataFailure(error) {
-  return {
-    type: "REQUEST_DATA_FAILURE",
-    error
-  };
-}
-
-export function requestDataSuccess(data) {
-  return {
-    type: "REQUEST_DATA_SUCCESS",
-    data
-  };
-}
-
-/* * * * * * * * * * * * * * *
- * Action creators
- * * * * * * * * * * * * * * */
+import {
+  requestDataStart,
+  requestDataFailure,
+  requestDataSuccess
+} from "./data.actions";
 
 export function requestData(
   url,
@@ -59,14 +33,15 @@ export function requestData(
         headers
       })
         .then(res => {
-          const action = dispatch(onSuccess(res.data));
+          dispatch(requestDataSuccess(res.data));
+          dispatch(onSuccess(res.data));
           if (redirect) {
             history.push(redirect(res.data));
           }
-          return action;
+          return res.data;
         })
         .catch(error => {
-          console.log(error);
+          dispatch(requestDataFailure(error));
           return dispatch(onFailure(error));
         });
     } catch (error) {
@@ -75,12 +50,7 @@ export function requestData(
   };
 }
 
-export function getData(
-  url,
-  onSuccess,
-  onFailure = requestDataFailure,
-  redirect = null
-) {
+export function getData(url, onSuccess, onFailure = null, redirect = null) {
   return requestData(url, "get", null, onSuccess, onFailure, null, redirect);
 }
 
@@ -88,7 +58,7 @@ export function postData(
   url,
   data,
   onSuccess,
-  onFailure = requestDataFailure,
+  onFailure = null,
   redirect = null
 ) {
   return requestData(url, "post", data, onSuccess, onFailure, null, redirect);
@@ -98,7 +68,7 @@ export function deleteData(
   url,
   id,
   onSuccess,
-  onFailure = requestDataFailure,
+  onFailure = null,
   redirect = null
 ) {
   return requestData(
@@ -116,7 +86,7 @@ export function putData(
   url,
   data,
   onSuccess,
-  onFailure = requestDataFailure,
+  onFailure = null,
   redirect = null
 ) {
   return requestData(url, "put", data, onSuccess, onFailure, null, redirect);
@@ -126,7 +96,7 @@ export function getProtectedData(
   url,
   tokenPath,
   onSuccess,
-  onFailure = requestDataFailure,
+  onFailure = null,
   redirect = null
 ) {
   return requestData(
@@ -145,7 +115,7 @@ export function postProtectedData(
   data,
   tokenPath,
   onSuccess,
-  onFailure = requestDataFailure,
+  onFailure = null,
   redirect = null
 ) {
   return requestData(
@@ -164,7 +134,7 @@ export function putProtectedData(
   data,
   tokenPath,
   onSuccess,
-  onFailure = requestDataFailure,
+  onFailure = null,
   redirect = null
 ) {
   return requestData(
@@ -183,7 +153,7 @@ export function deleteProtectedData(
   data,
   tokenPath,
   onSuccess,
-  onFailure = requestDataFailure,
+  onFailure = null,
   redirect = null
 ) {
   return requestData(

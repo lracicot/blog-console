@@ -25,8 +25,6 @@ const useStyles = makeStyles(theme => ({
 const Menu = props => {
   const classes = useStyles();
 
-  // makeStyles(console.log)();
-
   const { posts, createPost, isCreatingPost, handleClose, isOpened } = props;
 
   return (
