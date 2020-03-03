@@ -13,7 +13,8 @@ export function requestData(
   onSuccess,
   onFailure,
   tokenPath = null,
-  redirect = null
+  redirect = null,
+  type = null
 ) {
   return (dispatch, getState) => {
     try {
@@ -24,6 +25,10 @@ export function requestData(
         headers = {
           Authorization: `Bearer ${getState().getIn(tokenPath).jwtToken}`
         };
+      }
+
+      if (type) {
+        headers["Content-Type"] = type;
       }
 
       return new Axios({
@@ -41,6 +46,7 @@ export function requestData(
           return res.data;
         })
         .catch(error => {
+          console.log(error);
           dispatch(requestDataFailure(error));
           return dispatch(onFailure(error));
         });
@@ -126,6 +132,27 @@ export function postProtectedData(
     onFailure,
     tokenPath,
     redirect
+  );
+}
+
+export function postBinaryData(
+  url,
+  data,
+  type,
+  tokenPath,
+  onSuccess,
+  onFailure = null,
+  redirect = null
+) {
+  return requestData(
+    url,
+    "post",
+    data,
+    onSuccess,
+    onFailure,
+    tokenPath,
+    redirect,
+    type
   );
 }
 

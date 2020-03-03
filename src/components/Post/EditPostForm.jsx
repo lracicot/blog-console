@@ -1,3 +1,5 @@
+import "./tagsinput.css";
+
 import {
   Divider,
   Grid,
@@ -6,16 +8,15 @@ import {
   makeStyles
 } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
+import { fromJS } from "immutable";
 import React from "react";
 import TagsInput from "react-tagsinput";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
-import { fromJS } from "immutable";
-// import "react-tagsinput/react-tagsinput.css"; // If using WebPack and style-loader.
-import "./tagsinput.css"; // If using WebPack and style-loader.
 
 import PropTypes from "prop-types";
 
+import DeleteButton from "../Button/DeleteButton";
 import LoadingButton from "../Button/LoadingButton";
 import PostEditor from "../PostEditor";
 
@@ -154,15 +155,7 @@ const EditPostForm = props => {
       </LoadingButton>
     );
 
-  const deleteAction = () => {
-    if (window.confirm("Are you sure?")) {
-      handleDelete();
-    }
-  };
-
   const formDisabled = isPublishing || isArchiving || isSaving || isDeleting;
-
-  // console.log(initialValues.get("tags"));
 
   return (
     <form onSubmit={handleSubmit}>
@@ -238,15 +231,15 @@ const EditPostForm = props => {
             <Divider className={classes.rightMenuDivider} />
             <div className={classes.buttonGroup}>
               {actionButton}
-              <LoadingButton
-                onClick={deleteAction}
+              <DeleteButton
+                handleDelete={handleDelete}
                 isLoading={isDeleting}
                 disabled={
                   isDeleting || initialValues.get("status") === "published"
                 }
               >
                 Delete
-              </LoadingButton>
+              </DeleteButton>
             </div>
           </Paper>
           <Paper className={classes.paper}>

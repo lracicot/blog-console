@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 const FormModal = props => {
   const classes = useStyles();
-  const { children, createPost, isSaving, asset } = props;
+  const { children, updateAsset, isSaving, asset } = props;
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -64,7 +64,7 @@ const FormModal = props => {
         <Fade in={open}>
           <div className={classes.paper}>
             <EditAssetForm
-              onSubmit={createPost}
+              onSubmit={updateAsset}
               isSaving={isSaving}
               asset={asset}
             />
@@ -77,7 +77,7 @@ const FormModal = props => {
 
 FormModal.propTypes = {
   children: PropTypes.node,
-  createPost: PropTypes.func.isRequired,
+  updateAsset: PropTypes.func.isRequired,
   isSaving: PropTypes.bool,
   asset: PropTypes.any
 };

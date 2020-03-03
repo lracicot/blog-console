@@ -13,9 +13,16 @@ class ListAssets extends React.Component {
   }
 
   render() {
-    const { assets } = this.props;
+    const { assets, deleteAsset, createAsset, isDeleting } = this.props;
     if (assets.length) {
-      return <AssetsList assets={assets} />;
+      return (
+        <AssetsList
+          assets={assets}
+          handleDelete={deleteAsset}
+          handleUpload={createAsset}
+          isDeleting={isDeleting}
+        />
+      );
     } else {
       return <Spinner />;
     }
@@ -24,13 +31,19 @@ class ListAssets extends React.Component {
 
 ListAssets.propTypes = {
   assets: PropTypes.any,
-  retreiveAssets: PropTypes.func
+  retreiveAssets: PropTypes.func,
+  deleteAsset: PropTypes.func,
+  createAsset: PropTypes.func,
+  isDeleting: PropTypes.array
 };
 
 function mapStateToProps(state) {
   return {
     assets: state.hasIn(["asset", "assets"])
       ? state.getIn(["asset", "assets"]).toJS()
+      : [],
+    isDeleting: state.hasIn(["asset", "isDeleting"])
+      ? state.getIn(["asset", "isDeleting"]).toJS()
       : []
   };
 }

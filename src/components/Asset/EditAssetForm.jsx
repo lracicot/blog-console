@@ -1,9 +1,11 @@
-import { Button, InputAdornment } from "@material-ui/core";
 import { Field, reduxForm } from "redux-form/immutable";
+import { InputAdornment } from "@material-ui/core";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
 import PropTypes from "prop-types";
+
+import DeleteButton from "../Button/DeleteButton";
 
 const renderTextField = ({ input, children, ...custom }) => (
   <TextField {...input} {...custom}>
@@ -17,12 +19,12 @@ renderTextField.propTypes = {
 };
 
 const AddPostForm = props => {
-  const { handleSubmit, pristine, submitting, isCreating, asset } = props;
+  const { handleSubmit, isCreating, isDeleting, deleteAction, asset } = props;
   console.log(isCreating);
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <img src={`https://${asset.public_url}`} />
+        <img src={`https://${asset.public_url}`} alt={asset.title} />
         <Field
           name="title"
           fullWidth
@@ -32,14 +34,9 @@ const AddPostForm = props => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={pristine || submitting || isCreating}
-                >
-                  Create
-                </Button>
+                <DeleteButton onClick={deleteAction} isDeleting={isDeleting}>
+                  Delete
+                </DeleteButton>
               </InputAdornment>
             )
           }}
@@ -52,7 +49,10 @@ const AddPostForm = props => {
 AddPostForm.propTypes = {
   handleSubmit: PropTypes.func,
   pristine: PropTypes.bool,
+  isDeleting: PropTypes.bool,
+  deleteAction: PropTypes.bool,
   asset: PropTypes.any,
+  initialValues: PropTypes.any,
   submitting: PropTypes.bool,
   isCreating: PropTypes.bool
 };

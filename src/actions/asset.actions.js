@@ -52,21 +52,21 @@ export function updateAssetsFailure(error) {
 
 export function uploadAssetsRequest(uuid) {
   return {
-    type: Action.UPDATE_ASSET_REQUEST,
+    type: Action.UPLOAD_ASSET_REQUEST,
     data: uuid
   };
 }
 
 export function uploadAssetsSuccess(asset) {
   return {
-    type: Action.UPDATE_ASSET_SUCCESS,
+    type: Action.UPLOAD_ASSET_SUCCESS,
     data: fromJS(asset)
   };
 }
 
 export function uploadAssetsFailure(error) {
   return {
-    type: Action.UPDATE_ASSET_FAILURE,
+    type: Action.UPLOAD_ASSET_FAILURE,
     error: fromJS(error)
   };
 }

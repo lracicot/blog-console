@@ -1,11 +1,19 @@
 import { Map } from "immutable";
+import moment from "moment";
 import { assetTypes as assetAction } from "../consts";
 
-const updateAsset = (posts, postData) =>
-  posts.update(
-    posts.findIndex(item => item.get("uuid") === postData.get("uuid")),
-    () => postData
+const updateAsset = (assets, assetData) =>
+  assets.update(
+    assets.findIndex(item => item.get("uuid") === assetData.get("uuid")),
+    () => assetData
   );
+
+const sortAssets = assets =>
+  assets.sort((asset1, asset2) => {
+    if (moment(asset1.get("created_at")).isAfter(asset2.get("created_at")))
+      return -1;
+    else return 1;
+  });
 
 export default function(state = Map(), action) {
   switch (action.type) {
@@ -19,21 +27,17 @@ export default function(state = Map(), action) {
         error: action.error.toString()
       });
     case assetAction.CREATE_ASSET_SUCCESS:
-      return state.merge({
-        isCreating: false,
-        assets: action.data
-      });
+      return state
+        .merge({
+          isCreating: false
+        })
+        .set("assets", sortAssets(state.get("assets").push(action.data)));
     case assetAction.RETREIVE_ASSETS_SUCCESS:
-      return state.set("assets", action.data);
+      return state.set("assets", sortAssets(action.data));
     case assetAction.RETREIVE_ASSETS_FAILURE:
       return state.merge({ error: action.error.toString() });
     case assetAction.RETREIVE_ASSET_SUCCESS:
-      return state.set(
-        "currentPost",
-        action.data.has("content")
-          ? action.data.set("content", JSON.parse(action.data.get("content")))
-          : action.data
-      );
+      return state;
     case assetAction.RETREIVE_ASSET_FAILURE:
       return state.merge({ error: action.error.toString() });
     case assetAction.UPDATE_ASSET_REQUEST:
@@ -43,9 +47,6 @@ export default function(state = Map(), action) {
     case assetAction.UPDATE_ASSET_SUCCESS:
       return state.merge({
         isSaving: false,
-        currentPost: action.data.has("content")
-          ? action.data.set("content", JSON.parse(action.data.get("content")))
-          : action.data,
         assets: updateAsset(state.get("assets"), action.data)
       });
     case assetAction.UPLOAD_ASSET_FAILURE:
@@ -60,9 +61,6 @@ export default function(state = Map(), action) {
     case assetAction.UPLOAD_ASSET_SUCCESS:
       return state.merge({
         isSaving: false,
-        currentPost: action.data.has("content")
-          ? action.data.set("content", JSON.parse(action.data.get("content")))
-          : action.data,
         assets: updateAsset(state.get("assets"), action.data)
       });
     case assetAction.UPDATE_ASSET_FAILURE:
@@ -71,25 +69,20 @@ export default function(state = Map(), action) {
         error: action.error.toString()
       });
     case assetAction.DELETE_ASSET_REQUEST:
-      return state.merge({
-        isDeleting: true
-      });
+      return state.setIn(["isDeleting", action.data], true);
     case assetAction.DELETE_ASSET_SUCCESS:
-      return state.merge({
-        isDeleting: false,
-        assets: state
+      return state.setIn(["isDeleting", action.data], false).set(
+        "assets",
+        state
           .get("assets")
-          .delete(
-            state
-              .get("assets")
-              .findIndex(item => item.get("uuid") === action.data.get("uuid"))
-          )
-      });
+          .filter(asset => asset.get("uuid") !== action.data.get("uuid"))
+      );
     case assetAction.DELETE_ASSET_FAILURE:
-      return state.merge({
-        isDeleting: false,
-        error: action.error.toString()
-      });
+      return state
+        .merge({
+          error: action.error.toString()
+        })
+        .setIn(["isDeleting", action.data], false);
     default:
       return state;
   }

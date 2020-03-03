@@ -4,7 +4,8 @@ import {
   getProtectedData,
   putProtectedData,
   postProtectedData,
-  deleteProtectedData
+  deleteProtectedData,
+  postBinaryData
 } from "./data.creators";
 
 export function retreiveAssets() {
@@ -40,13 +41,14 @@ export function updateAsset(uuid, data) {
   };
 }
 
-export function uploadAsset(uuid, data) {
+export function uploadAsset(uuid, data, type) {
   return dispatch => {
     dispatch(Actions.uploadAssetsRequest(uuid));
     dispatch(
-      putProtectedData(
+      postBinaryData(
         assetTypes.ASSETS_API.UPLOAD_ASSET_URL(uuid),
         data,
+        type,
         ["profile", "idToken"],
         Actions.uploadAssetsSuccess,
         Actions.uploadAssetsFailure
@@ -55,19 +57,19 @@ export function uploadAsset(uuid, data) {
   };
 }
 
-export function createAsset(data) {
+export function createAsset(title, content, type) {
   return dispatch => {
     dispatch(Actions.createAssetsRequest());
     dispatch(
       postProtectedData(
         assetTypes.ASSETS_API.CREATE_ASSET_URL(),
-        data,
+        { title },
         ["profile", "idToken"],
         Actions.createAssetsSuccess,
-        Actions.createAssetsFailure,
-        data => `/asset/${data.uuid}/edit`
+        Actions.createAssetsFailure
+        // data => `/asset/${data.uuid}/edit`
       )
-    );
+    ).then(data => uploadAsset(data.uuid, content, type)(dispatch));
   };
 }
 
@@ -80,8 +82,8 @@ export function deleteAsset(uuid) {
         {},
         ["profile", "idToken"],
         Actions.deleteAssetsSuccess,
-        Actions.deleteAssetsFailure,
-        () => `/`
+        Actions.deleteAssetsFailure
+        // () => `/`
       )
     );
   };
