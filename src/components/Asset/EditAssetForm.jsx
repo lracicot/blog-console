@@ -1,11 +1,8 @@
-import { Field, reduxForm } from "redux-form/immutable";
-import { InputAdornment } from "@material-ui/core";
+import { reduxForm } from "redux-form/immutable";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
 import PropTypes from "prop-types";
-
-import DeleteButton from "../Button/DeleteButton";
 
 const renderTextField = ({ input, children, ...custom }) => (
   <TextField {...input} {...custom}>
@@ -19,28 +16,12 @@ renderTextField.propTypes = {
 };
 
 const AddPostForm = props => {
-  const { handleSubmit, isCreating, isDeleting, deleteAction, asset } = props;
+  const { handleSubmit, isCreating, asset } = props;
   console.log(isCreating);
   return (
     <form onSubmit={handleSubmit}>
       <div>
         <img src={`https://${asset.public_url}`} alt={asset.title} />
-        <Field
-          name="title"
-          fullWidth
-          component={renderTextField}
-          label="Title"
-          variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <DeleteButton onClick={deleteAction} isDeleting={isDeleting}>
-                  Delete
-                </DeleteButton>
-              </InputAdornment>
-            )
-          }}
-        />
       </div>
     </form>
   );

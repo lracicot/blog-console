@@ -6,24 +6,13 @@ import {
   convertToRaw
 } from "draft-js";
 import { fromJS } from "immutable";
-// import { makeStyles } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import React from "react";
 
 import PropTypes from "prop-types";
 
-// const useStyles = makeStyles(theme => {
-//   console.log(theme);
-//   return {
-//     // container: {
-//     //   border: "1px solid black"
-//     // }
-//   };
-// });
 const defaultProps = {
-  // bgcolor: "background.paper",
   borderColor: "grey.400",
-  // m: 1,
   border: 1,
   marginTop: 4,
   padding: 1,
@@ -31,7 +20,6 @@ const defaultProps = {
 };
 
 const PostEditor = props => {
-  // const classes = useStyles();
   const { value, onChange, disabled } = props;
   let initialEditorState = EditorState.createEmpty();
   if (value) {
@@ -56,7 +44,6 @@ const PostEditor = props => {
         <Editor
           editorState={editorState}
           readOnly={disabled}
-          // onChange={setEditorState}
           onChange={editorState => handleChange(editorState)}
         />
       </Box>

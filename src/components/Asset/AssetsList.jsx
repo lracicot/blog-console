@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 
 import DeleteButton from "../Button/DeleteButton";
 import Dropzone from "./Dropzone";
-import FormModal from "./EditAssetModal";
+// import FormModal from "./EditAssetModal";
 import SmallSpinner from "../Spinner/SmallSpinner";
 
 const useStyles = makeStyles(theme => ({
