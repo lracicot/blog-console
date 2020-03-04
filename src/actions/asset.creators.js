@@ -57,19 +57,18 @@ export function uploadAsset(uuid, data, type) {
   };
 }
 
-export function createAsset(title, content, type) {
+export function createAsset(file, content) {
   return dispatch => {
     dispatch(Actions.createAssetsRequest());
     dispatch(
       postProtectedData(
         assetTypes.ASSETS_API.CREATE_ASSET_URL(),
-        { title },
+        { title: file.name },
         ["profile", "idToken"],
         Actions.createAssetsSuccess,
         Actions.createAssetsFailure
-        // data => `/asset/${data.uuid}/edit`
       )
-    ).then(data => uploadAsset(data.uuid, content, type)(dispatch));
+    ).then(data => uploadAsset(data.uuid, content, file.type)(dispatch));
   };
 }
 
@@ -83,7 +82,6 @@ export function deleteAsset(uuid) {
         ["profile", "idToken"],
         Actions.deleteAssetsSuccess,
         Actions.deleteAssetsFailure
-        // () => `/`
       )
     );
   };

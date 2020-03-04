@@ -77,7 +77,7 @@ const FormModal = props => {
 
 FormModal.propTypes = {
   children: PropTypes.node,
-  updateAsset: PropTypes.func.isRequired,
+  updateAsset: PropTypes.func,
   isSaving: PropTypes.bool,
   asset: PropTypes.any
 };

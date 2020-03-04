@@ -14,6 +14,7 @@ const LoadingButton = props => {
     type,
     variant,
     color,
+    renderActionIcon,
     ...rest
   } = props;
 
@@ -31,6 +32,7 @@ const LoadingButton = props => {
         ""
       )}
       {isDone && !isLoading ? <Done style={{ marginRight: 5 }} /> : ""}
+      {renderActionIcon && !isDone && !isLoading ? renderActionIcon() : ""}
       {children}
     </Button>
   );
@@ -41,7 +43,8 @@ LoadingButton.defaultProps = {
   variant: "contained",
   color: "secondary",
   isDone: false,
-  isLoading: false
+  isLoading: false,
+  renderActionIcon: null
 };
 
 LoadingButton.propTypes = {
@@ -51,7 +54,8 @@ LoadingButton.propTypes = {
   disabled: PropTypes.bool,
   type: PropTypes.string,
   variant: PropTypes.string,
-  color: PropTypes.string
+  color: PropTypes.string,
+  renderActionIcon: PropTypes.func
 };
 
 export default LoadingButton;
