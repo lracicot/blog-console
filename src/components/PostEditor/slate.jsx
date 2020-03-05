@@ -11,9 +11,10 @@ import {
 } from "@material-ui/icons";
 import { Editable, withReact, useSlate, Slate } from "slate-react";
 import { Editor, Transforms, createEditor } from "slate";
+import { fromJS } from "immutable";
 import { withHistory } from "slate-history";
 import React, { useCallback, useMemo, useState } from "react";
-import { fromJS } from "immutable";
+import Prism from "prismjs";
 
 import isHotkey from "is-hotkey";
 
@@ -29,8 +30,9 @@ const HOTKEYS = {
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
 const RichTextExample = ({ onChange, ...props }) => {
-  console.log(props.value.toJS());
-  const [value, setValue] = useState(props.value.toJS());
+  const [value, setValue] = useState(
+    props.value ? props.value.toJS() : initialValues
+  );
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -56,7 +58,7 @@ const RichTextExample = ({ onChange, ...props }) => {
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}
-        placeholder="Enter some rich text…"
+        placeholder="What's on your mind?"
         spellCheck
         autoFocus
         onKeyDown={event => {
@@ -129,6 +131,10 @@ const Element = ({ attributes, children, element }) => {
       return <li {...attributes}>{children}</li>;
     case "numbered-list":
       return <ol {...attributes}>{children}</ol>;
+    // case "code":
+    //   return <CodeBlock {...props} />;
+    // case "code_line":
+    //   return <CodeBlockLine {...props} />;
     default:
       return <p {...attributes}>{children}</p>;
   }
@@ -183,6 +189,13 @@ const MarkButton = ({ format, icon }) => {
     </Button>
   );
 };
+
+const initialValues = [
+  {
+    type: "paragraph",
+    children: [{ text: "" }]
+  }
+];
 
 // https://github.com/ianstormtaylor/slate/blob/v0.47/examples/code-highlighting/index.js
 

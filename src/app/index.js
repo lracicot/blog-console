@@ -29,12 +29,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // console.log("indexDidMount");
     this.hydrateAuth();
   }
 
   componentDidUpdate(prevProps) {
-    // console.log("indexDidUpdate");
     if (
       !Object.keys(prevProps.user).length &&
       Object.keys(this.props.user).length

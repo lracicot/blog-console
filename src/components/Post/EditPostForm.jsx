@@ -18,7 +18,6 @@ import PropTypes from "prop-types";
 
 import DeleteButton from "../Button/DeleteButton";
 import LoadingButton from "../Button/LoadingButton";
-// import PostEditor from "../PostEditor";
 import PostEditor from "../PostEditor/slate";
 
 const useStyles = makeStyles(theme => ({

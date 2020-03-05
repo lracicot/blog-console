@@ -20,7 +20,6 @@ renderTextField.propTypes = {
 
 const AddPostForm = props => {
   const { handleSubmit, pristine, submitting, isCreating } = props;
-  console.log(isCreating);
   return (
     <form onSubmit={handleSubmit}>
       <div>

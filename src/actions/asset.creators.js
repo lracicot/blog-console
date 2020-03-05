@@ -1,15 +1,15 @@
 import * as Actions from "./asset.actions";
 import { assetTypes } from "../consts";
 import {
-  getProtectedData,
-  putProtectedData,
-  postProtectedData,
-  deleteProtectedData,
+  getData,
+  putData,
+  postData,
+  deleteData,
   postBinaryData
-} from "./data.creators";
+} from "./app.creators";
 
 export function retreiveAssets() {
-  return getProtectedData(
+  return getData(
     assetTypes.ASSETS_API.LIST_ASSETS_URL(),
     ["profile", "idToken"],
     Actions.retreiveAssetsSuccess,
@@ -18,7 +18,7 @@ export function retreiveAssets() {
 }
 
 export function retreiveAsset(uuid) {
-  return getProtectedData(
+  return getData(
     assetTypes.ASSETS_API.RETREIVE_ASSET_URL(uuid),
     ["profile", "idToken"],
     Actions.retreiveAssetSuccess,
@@ -30,7 +30,7 @@ export function updateAsset(uuid, data) {
   return dispatch => {
     dispatch(Actions.updateAssetsRequest(uuid));
     dispatch(
-      putProtectedData(
+      putData(
         assetTypes.ASSETS_API.UPDATE_ASSET_URL(uuid),
         data,
         ["profile", "idToken"],
@@ -61,7 +61,7 @@ export function createAsset(file, content) {
   return dispatch => {
     dispatch(Actions.createAssetsRequest());
     dispatch(
-      postProtectedData(
+      postData(
         assetTypes.ASSETS_API.CREATE_ASSET_URL(),
         { title: file.name },
         ["profile", "idToken"],
@@ -76,7 +76,7 @@ export function deleteAsset(uuid) {
   return dispatch => {
     dispatch(Actions.deleteAssetsRequest(uuid));
     dispatch(
-      deleteProtectedData(
+      deleteData(
         assetTypes.ASSETS_API.DELETE_ASSET_URL(uuid),
         {},
         ["profile", "idToken"],

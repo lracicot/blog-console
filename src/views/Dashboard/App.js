@@ -1,16 +1,26 @@
 import React from "react";
-
-// import LoadingButton from "../../components/Button/LoadingButton";
-
-// <LoadingButton isLoading={false}>Test</LoadingButton>
-// <LoadingButton isLoading={true}>Test</LoadingButton>
-// <LoadingButton isDone={true}>Test</LoadingButton>
-// <LoadingButton isDone={true} disabled={true}>
-//   Test
-// </LoadingButton>
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 function Dashboard() {
-  return <div></div>;
+  const codeString = `export default function(state = Map(), action) {
+    switch (action.type) {
+      case "SET_STATE":
+        return setState(state, action.state);
+      default:
+        return state;
+    }
+  }
+`;
+  return (
+    <SyntaxHighlighter
+      language="javascript"
+      showLineNumbers={true}
+      style={atomOneDark}
+    >
+      {codeString}
+    </SyntaxHighlighter>
+  );
 }
 
 export default Dashboard;

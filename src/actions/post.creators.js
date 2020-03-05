@@ -1,14 +1,10 @@
 import * as Actions from "./post.actions";
 import { postTypes } from "../consts";
-import {
-  getProtectedData,
-  putProtectedData,
-  postProtectedData,
-  deleteProtectedData
-} from "./data.creators";
+import history from "../history";
+import { getData, putData, postData, deleteData } from "./app.creators";
 
 export function retreivePosts() {
-  return getProtectedData(
+  return getData(
     postTypes.POSTS_API.LIST_POSTS_URL(),
     ["profile", "idToken"],
     Actions.retreivePostsSuccess,
@@ -17,7 +13,7 @@ export function retreivePosts() {
 }
 
 export function retreivePost(uuid) {
-  return getProtectedData(
+  return getData(
     postTypes.POSTS_API.RETREIVE_POST_URL(uuid),
     ["profile", "idToken"],
     Actions.retreivePostSuccess,
@@ -29,7 +25,7 @@ export function updatePost(uuid, data) {
   return dispatch => {
     dispatch(Actions.updatePostsRequest(uuid));
     dispatch(
-      putProtectedData(
+      putData(
         postTypes.POSTS_API.UPDATE_POST_URL(uuid),
         data,
         ["profile", "idToken"],
@@ -44,15 +40,14 @@ export function createPost(data) {
   return dispatch => {
     dispatch(Actions.createPostsRequest());
     dispatch(
-      postProtectedData(
+      postData(
         postTypes.POSTS_API.CREATE_POST_URL(),
         data,
         ["profile", "idToken"],
         Actions.createPostsSuccess,
-        Actions.createPostsFailure,
-        data => `/post/${data.uuid}/edit`
+        Actions.createPostsFailure
       )
-    );
+    ).then(data => history.push(`/post/${data.uuid}/edit`));
   };
 }
 
@@ -60,7 +55,7 @@ export function publishPost(uuid) {
   return dispatch => {
     dispatch(Actions.publishPostsRequest(uuid));
     dispatch(
-      postProtectedData(
+      postData(
         postTypes.POSTS_API.PUBLISH_POST_URL(uuid),
         {},
         ["profile", "idToken"],
@@ -75,7 +70,7 @@ export function archivePost(uuid) {
   return dispatch => {
     dispatch(Actions.archivePostsRequest(uuid));
     dispatch(
-      postProtectedData(
+      postData(
         postTypes.POSTS_API.ARCHIVE_POST_URL(uuid),
         {},
         ["profile", "idToken"],
@@ -90,14 +85,13 @@ export function deletePost(uuid) {
   return dispatch => {
     dispatch(Actions.deletePostsRequest(uuid));
     dispatch(
-      deleteProtectedData(
+      deleteData(
         postTypes.POSTS_API.DELETE_POST_URL(uuid),
         {},
         ["profile", "idToken"],
         Actions.deletePostsSuccess,
-        Actions.deletePostsFailure,
-        () => `/`
-      )
+        Actions.deletePostsFailure
+      ).then(() => history.push(`/`))
     );
   };
 }

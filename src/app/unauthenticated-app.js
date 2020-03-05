@@ -15,7 +15,6 @@ class App extends React.Component {
   signIn() {
     const { OAuthSignIn, hydrating } = this.props;
     const code = this.getCode(window.location);
-    // console.log(code, hydrating);
     if (!code && !hydrating) {
       OAuthSignIn();
     }
