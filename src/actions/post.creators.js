@@ -91,7 +91,7 @@ export function deletePost(uuid) {
         ["profile", "idToken"],
         Actions.deletePostsSuccess,
         Actions.deletePostsFailure
-      ).then(() => history.push(`/`))
-    );
+      )
+    ).then(() => history.push(`/`));
   };
 }

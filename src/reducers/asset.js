@@ -1,4 +1,4 @@
-import { Map } from "immutable";
+import { Map, fromJS } from "immutable";
 import moment from "moment";
 import { assetTypes as assetAction } from "../consts";
 
@@ -31,7 +31,10 @@ export default function(state = Map(), action) {
         .merge({
           isCreating: false
         })
-        .set("assets", sortAssets(state.get("assets").push(action.data)));
+        .set(
+          "assets",
+          sortAssets(state.get("assets", fromJS([])).push(action.data))
+        );
     case assetAction.RETREIVE_ASSETS_SUCCESS:
       return state.set("assets", sortAssets(action.data));
     case assetAction.RETREIVE_ASSETS_FAILURE:

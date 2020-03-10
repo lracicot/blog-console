@@ -7,7 +7,8 @@ import PropTypes from "prop-types";
 
 import Spinner from "../../components/Spinner/Spinner";
 import EditPostForm from "../../components/Post/EditPostForm";
-import * as actionCreators from "../../actions/post.creators";
+import * as postCreators from "../../actions/post.creators";
+import * as assetCreators from "../../actions/asset.creators";
 
 const styles = {
   formContainer: {
@@ -23,8 +24,12 @@ class EditPost extends React.Component {
     };
   }
 
+  retreivePost(uuid) {
+    this.props.retreivePost(uuid);
+  }
+
   componentDidMount() {
-    this.props.retreivePost(this.state.postUuid);
+    this.retreivePost(this.state.postUuid);
   }
 
   componentDidUpdate(prevProps) {
@@ -32,7 +37,7 @@ class EditPost extends React.Component {
       this.setState({
         postUuid: this.props.match.params.uuid
       });
-      this.props.retreivePost(this.props.match.params.uuid);
+      this.retreivePost(this.props.match.params.uuid);
     }
   }
 
@@ -53,8 +58,20 @@ class EditPost extends React.Component {
   }
 
   handleDelete() {
+    console.log(this.props.post);
+    if (this.props.post.header_image) {
+      this.props.deleteAsset(this.props.post.header_image.uuid);
+    }
     this.props.deletePost(this.state.postUuid);
   }
+
+  handleUpload(file, data) {
+    this.props.createAsset(file, data, { post: this.state.postUuid });
+  }
+
+  // handleFileDelete(uuid) {
+  //   this.props.deleteAsset(uuid);
+  // }
 
   render() {
     const {
@@ -74,6 +91,7 @@ class EditPost extends React.Component {
             handleArchive={this.handleArchive.bind(this)}
             handlePublish={this.handlePublish.bind(this)}
             handleDelete={this.handleDelete.bind(this)}
+            handleUpload={this.handleUpload.bind(this)}
             isPublishing={isPublishing}
             isArchiving={isArchiving}
             isDeleting={isDeleting}
@@ -99,7 +117,10 @@ EditPost.propTypes = {
   updatePost: PropTypes.func,
   deletePost: PropTypes.func,
   match: PropTypes.object,
-  classes: PropTypes.object
+  classes: PropTypes.object,
+  retreiveAsset: PropTypes.func,
+  deleteAsset: PropTypes.func,
+  createAsset: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -122,7 +143,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  actionCreators
-)(withStyles(styles)(EditPost));
+export default connect(mapStateToProps, { ...postCreators, ...assetCreators })(
+  withStyles(styles)(EditPost)
+);

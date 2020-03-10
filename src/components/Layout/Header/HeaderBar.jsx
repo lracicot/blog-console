@@ -101,7 +101,6 @@ const HeaderBar = props => {
           }}
           open={myAccountOpen}
           onClose={handleClose}
-          PopoverClasses={classes.accountMenu}
         >
           <MenuItem onClick={handleClose}>
             <NavLink className={classes.link} to="/logout">

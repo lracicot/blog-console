@@ -14,9 +14,11 @@ import TagsInput from "react-tagsinput";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
 
+import { Prompt } from "react-router";
 import PropTypes from "prop-types";
 
 import DeleteButton from "../Button/DeleteButton";
+import ImageInput from "../Form/ImageInput";
 import LoadingButton from "../Button/LoadingButton";
 import PostEditor from "../PostEditor/slate";
 
@@ -60,6 +62,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("md")]: {
       order: 2
     }
+  },
+  headerImage: {
+    width: "100%"
   }
 }));
 
@@ -106,11 +111,19 @@ renderTagsField.propTypes = {
   placeholder: PropTypes.string
 };
 
-const renderEditor = ({ input, ...custom }) => {
-  return <PostEditor {...input} {...custom} />;
-};
+const renderEditor = ({ input, ...custom }) => (
+  <PostEditor {...input} {...custom} />
+);
 
 renderEditor.propTypes = {
+  input: PropTypes.any
+};
+
+const renderImageInput = ({ input, ...custom }) => (
+  <ImageInput {...input} {...custom} />
+);
+
+renderImageInput.propTypes = {
   input: PropTypes.any
 };
 
@@ -127,7 +140,8 @@ const EditPostForm = props => {
     handleDelete,
     pristine,
     submitting,
-    initialValues
+    initialValues,
+    handleUpload
   } = props;
 
   const actionButton =
@@ -155,10 +169,20 @@ const EditPostForm = props => {
       </LoadingButton>
     );
 
+  if (!pristine) {
+    window.onbeforeunload = () => true;
+  } else {
+    window.onbeforeunload = undefined;
+  }
+
   const formDisabled = isPublishing || isArchiving || isSaving || isDeleting;
 
   return (
     <form onSubmit={handleSubmit}>
+      <Prompt
+        when={!pristine}
+        message="You have unsaved changes. Do you want to leave?"
+      />
       <Grid container spacing={3} justify="center">
         <Grid item xs={12} md={7} className={classes.mainForm}>
           <Paper className={classes.paper}>
@@ -229,17 +253,21 @@ const EditPostForm = props => {
               .charAt(0)
               .toUpperCase() + initialValues.get("status").slice(1)}
             <Divider className={classes.rightMenuDivider} />
-            <div className={classes.buttonGroup}>
-              {actionButton}
-              <DeleteButton
-                handleDelete={handleDelete}
-                isLoading={isDeleting}
-                disabled={
-                  isDeleting || initialValues.get("status") === "published"
-                }
-              >
-                Delete
-              </DeleteButton>
+            <div className={classes.buttonGroup}>{actionButton}</div>
+          </Paper>
+          <Paper className={classes.paper}>
+            <Typography component="h5" variant="h5">
+              Header
+            </Typography>
+            <div className={classes.formControl}>
+              <Field
+                name="header_image"
+                handleUpload={handleUpload}
+                component={renderImageInput}
+                disabled={formDisabled}
+                fullWidth
+                key={initialValues.get("uuid")}
+              />
             </div>
           </Paper>
           <Paper className={classes.paper}>
@@ -251,7 +279,6 @@ const EditPostForm = props => {
                 name="tags"
                 label="tags"
                 variant="outlined"
-                suggestions={["patate"]}
                 component={renderTagsField}
                 disabled={formDisabled}
                 fullWidth
@@ -259,6 +286,14 @@ const EditPostForm = props => {
               />
             </div>
           </Paper>
+
+          <DeleteButton
+            handleDelete={handleDelete}
+            isLoading={isDeleting}
+            disabled={isDeleting || initialValues.get("status") === "published"}
+          >
+            Delete article
+          </DeleteButton>
         </Grid>
       </Grid>
     </form>
@@ -274,6 +309,7 @@ EditPostForm.propTypes = {
   handlePublish: PropTypes.func,
   handleArchive: PropTypes.func,
   handleDelete: PropTypes.func,
+  handleUpload: PropTypes.func,
   pristine: PropTypes.any,
   reset: PropTypes.func,
   submitting: PropTypes.bool,

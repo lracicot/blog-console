@@ -1,21 +1,11 @@
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardHeader,
-  CardMedia,
-  Grid
-} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import moment from "moment";
 
 import PropTypes from "prop-types";
 
-import DeleteButton from "../Button/DeleteButton";
+import AssetDisplay from "./AssetDisplay";
 import Dropzone from "./Dropzone";
-// import FormModal from "./EditAssetModal";
-import SmallSpinner from "../Spinner/SmallSpinner";
 
 const useStyles = makeStyles(theme => ({
   media: {
@@ -43,34 +33,11 @@ const AssetsList = props => {
             className={classes.mainForm}
             key={asset.uuid}
           >
-            <Card className={classes.card}>
-              <CardHeader
-                titleTypographyProps={{ variant: "subtitle1" }}
-                subheaderTypographyProps={{ variant: "subtitle2" }}
-                title={asset.title}
-                subheader={`Uploaded ${moment(asset.created_at).format(
-                  "YYYY-MM-DD HH:mm"
-                )}`}
-              />
-              <CardActionArea>
-                {asset.public_url ? (
-                  <CardMedia
-                    className={classes.media}
-                    image={`https://${asset.public_url}`}
-                    title={asset.title}
-                  />
-                ) : (
-                  <SmallSpinner />
-                )}
-              </CardActionArea>
-              <CardActions>
-                <DeleteButton
-                  handleDelete={() => handleDelete(asset.uuid)}
-                  isLoading={isDeleting[asset.uuid]}
-                  disabled={isDeleting[asset.uuid]}
-                />
-              </CardActions>
-            </Card>
+            <AssetDisplay
+              asset={asset}
+              handleDelete={handleDelete}
+              isDeleting={isDeleting[asset.uuid]}
+            />
           </Grid>
         ))}
       </Grid>

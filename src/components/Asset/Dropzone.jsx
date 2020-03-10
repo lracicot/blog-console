@@ -1,13 +1,16 @@
+import { CloudUpload } from "@material-ui/icons";
 import { useDropzone } from "react-dropzone";
-import PropTypes from "prop-types";
 import React, { useCallback, useMemo } from "react";
+
+import PropTypes from "prop-types";
 
 const baseStyle = {
   flex: 1,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "40px",
+  textAlign: "center",
+  padding: 60,
   borderWidth: 2,
   borderRadius: 2,
   borderColor: "#bbbbbb",
@@ -16,7 +19,8 @@ const baseStyle = {
   color: "#999999",
   outline: "none",
   transition: "all .24s ease-in-out",
-  margin: 10
+  margin: 18,
+  maxHeight: 240
 };
 
 const activeStyle = {
@@ -69,6 +73,7 @@ const Dropzone = props => {
     <section className="container">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
+        <CloudUpload />
         <p>Drag and drop images here, or click to select files</p>
       </div>
     </section>

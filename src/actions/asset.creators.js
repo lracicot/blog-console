@@ -57,13 +57,13 @@ export function uploadAsset(uuid, data, type) {
   };
 }
 
-export function createAsset(file, content) {
+export function createAsset(file, content, props = {}) {
   return dispatch => {
     dispatch(Actions.createAssetsRequest());
     dispatch(
       postData(
         assetTypes.ASSETS_API.CREATE_ASSET_URL(),
-        { title: file.name },
+        { title: file.name, ...props },
         ["profile", "idToken"],
         Actions.createAssetsSuccess,
         Actions.createAssetsFailure

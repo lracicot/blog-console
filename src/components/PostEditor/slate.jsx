@@ -14,7 +14,6 @@ import { Editor, Transforms, createEditor } from "slate";
 import { fromJS } from "immutable";
 import { withHistory } from "slate-history";
 import React, { useCallback, useMemo, useState } from "react";
-import Prism from "prismjs";
 
 import isHotkey from "is-hotkey";
 
