@@ -21,12 +21,6 @@ const Element = props => {
       return <li {...attributes}>{children}</li>;
     case "numbered-list":
       return <ol {...attributes}>{children}</ol>;
-    case "code":
-      return (
-        <pre {...attributes}>
-          <code>{children}</code>
-        </pre>
-      );
     case "code-block":
       return <CodeBlock {...attributes}>{children}</CodeBlock>;
     case "image":

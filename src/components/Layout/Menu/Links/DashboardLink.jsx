@@ -1,4 +1,10 @@
-import { ListItem, ListItemText, makeStyles } from "@material-ui/core";
+import { Dashboard } from "@material-ui/icons";
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles
+} from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import React from "react";
 
@@ -7,8 +13,8 @@ const useStyles = makeStyles(() => ({
     color: "#fafafa",
     textDecoration: "none"
   },
-  linkSecondary: {
-    color: "#aaaaaa"
+  lightIcon: {
+    color: "#fafafa"
   }
 }));
 
@@ -17,12 +23,10 @@ const DashboardLink = props => {
   return (
     <NavLink to="/" className={classes.link} {...props}>
       <ListItem button key="dashboard">
-        <ListItemText
-          classes={{
-            secondary: classes.linkSecondary
-          }}
-          primary="Dashboard"
-        />
+        <ListItemIcon>
+          <Dashboard className={classes.lightIcon} />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
       </ListItem>
     </NavLink>
   );

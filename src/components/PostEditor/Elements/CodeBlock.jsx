@@ -1,26 +1,31 @@
+import oneDark from "../slate-code/prism/themes/one-dark";
 import { css } from "emotion";
-import React from "react";
-import PropTypes from "prop-types";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import React, { forwardRef } from "react";
 
-const CodeBlock = ({ attributes, children }) => {
+import PropTypes from "prop-types";
+
+const CodeBlock = forwardRef(function CodeBlock(
+  { children, ...attributes },
+  ref
+) {
   return (
     <pre
+      ref={ref}
       className={css`
-        ${atomDark['pre[class*="language-"]']}
+        ${oneDark['pre[class*="language-"]']}
       `}
     >
       <code
         {...attributes}
         className={css`
-          ${atomDark['code[class*="language-"]']}
+          ${oneDark['code[class*="language-"]']}
         `}
       >
         {children}
       </code>
     </pre>
   );
-};
+});
 
 CodeBlock.propTypes = {
   attributes: PropTypes.any,

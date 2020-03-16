@@ -12,27 +12,17 @@ const LIST_TYPES = ["numbered-list", "bulleted-list"];
 const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(editor, format);
   const isList = LIST_TYPES.includes(format);
-  const isCode = "code" === format;
-  const isCodeBlock = "code-block" === format;
 
   Transforms.unwrapNodes(editor, {
-    match: n => LIST_TYPES.includes(n.type) || "code-block" === n.type,
+    match: n => LIST_TYPES.includes(n.type),
     split: true
   });
 
   Transforms.setNodes(editor, {
-    type: isActive
-      ? "paragraph"
-      : isList
-      ? "list-item"
-      : isCodeBlock
-      ? "code-block"
-      : isCode
-      ? "code"
-      : format
+    type: isActive ? "paragraph" : isList ? "list-item" : format
   });
 
-  if (!isActive && (isList || isCodeBlock || isCode)) {
+  if (!isActive && isList) {
     const block = { type: format, children: [] };
     Transforms.wrapNodes(editor, block);
   }

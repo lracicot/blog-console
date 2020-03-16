@@ -4,7 +4,7 @@ import Prism from "prismjs";
 export default editor => ([node, path]) => {
   const ranges = [];
 
-  if (!Text.isText(node) || Node.parent(editor, path).type !== "code-block") {
+  if (!Text.isText(node) || "code-block" !== Node.parent(editor, path).type) {
     return ranges;
   }
 

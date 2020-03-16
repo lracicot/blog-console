@@ -7,7 +7,8 @@ import {
   FormatQuote,
   FormatUnderlined,
   LooksOne,
-  LooksTwo
+  LooksTwo,
+  SettingsEthernet
 } from "@material-ui/icons";
 import { Editable, Slate, withReact } from "slate-react";
 import { createEditor } from "slate";
@@ -34,7 +35,7 @@ const HOTKEYS = {
   "mod+`": "code"
 };
 
-const PostEditor = ({ onChange, handleImageUpload, ...props }) => {
+const PostEditor = ({ onChange, handleImageUpload, handleSave, ...props }) => {
   const [value, setValue] = useState(
     props.value
       ? props.value.toJS()
@@ -64,7 +65,7 @@ const PostEditor = ({ onChange, handleImageUpload, ...props }) => {
         <MarkButton format="bold" icon={<FormatBold />} />
         <MarkButton format="italic" icon={<FormatItalic />} />
         <MarkButton format="underline" icon={<FormatUnderlined />} />
-        <MarkButton format="code" icon={<Code />} />
+        <MarkButton format="code" icon={<SettingsEthernet />} />
         <BlockButton format="code-block" icon={<Code />} />
         <BlockButton format="heading-one" icon={<LooksOne />} />
         <BlockButton format="heading-two" icon={<LooksTwo />} />
@@ -88,6 +89,11 @@ const PostEditor = ({ onChange, handleImageUpload, ...props }) => {
               toggleMark(editor, mark);
             }
           }
+
+          if (isHotkey("mod+s", event)) {
+            event.preventDefault();
+            handleSave();
+          }
         }}
       />
     </Slate>
@@ -95,6 +101,7 @@ const PostEditor = ({ onChange, handleImageUpload, ...props }) => {
 };
 
 PostEditor.propTypes = {
+  handleSave: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   handleImageUpload: PropTypes.func.isRequired,
   value: PropTypes.any

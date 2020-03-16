@@ -1,5 +1,5 @@
 import { css } from "emotion";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import oneDark from "../slate-code/prism/themes/one-dark";
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -16,9 +16,25 @@ const Leaf = ({ attributes, children, leaf }) => {
     children = <u>{children}</u>;
   }
 
-  if (leaf.isCode) {
+  if (leaf.code) {
+    children = (
+      <code
+        {...attributes}
+        className={css`
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          font-size: 0.9em;
+          padding: 1px;
+        `}
+      >
+        {children}
+      </code>
+    );
+  }
+
+  if (leaf.isCode || leaf.code) {
     attributes.className = css`
-      ${Object.keys(atomDark).map(prop => leaf[prop] && atomDark[prop])}
+      ${Object.keys(oneDark).map(prop => leaf[prop] && oneDark[prop])}
     `;
   }
 
