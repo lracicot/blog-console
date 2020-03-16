@@ -84,7 +84,7 @@ const SelectAssetModal = props => {
 };
 
 SelectAssetModal.propTypes = {
-  assets: PropTypes.node,
+  assets: PropTypes.array,
   renderOpenButton: PropTypes.func,
   handleSelection: PropTypes.func,
   handleUpload: PropTypes.func

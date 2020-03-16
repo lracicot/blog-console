@@ -69,7 +69,7 @@ AssetDisplay.defaultProps = {
 };
 
 AssetDisplay.propTypes = {
-  handleDelete: PropTypes.func,
+  handleDelete: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   onClick: PropTypes.func,
   asset: PropTypes.any,
   isDeleting: PropTypes.bool

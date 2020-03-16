@@ -220,6 +220,7 @@ const EditPostForm = props => {
               <Field
                 name="content"
                 component={renderEditor}
+                handleImageUpload={handleUpload}
                 disabled={formDisabled}
                 key={initialValues.get("uuid")}
               />
