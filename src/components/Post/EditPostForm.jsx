@@ -202,6 +202,21 @@ const EditPostForm = props => {
             </div>
             <div className={classes.formControl}>
               <Field
+                name="content"
+                component={renderEditor}
+                handleSave={handleSubmit}
+                handleImageUpload={handleUpload}
+                disabled={formDisabled}
+                key={initialValues.get("uuid")}
+              />
+            </div>
+          </Paper>
+          <Paper className={classes.paper}>
+            <Typography component="h5" variant="h5">
+              SEO
+            </Typography>
+            <div className={classes.formControl}>
+              <Field
                 name="slug"
                 component={renderTextField}
                 disabled={formDisabled}
@@ -218,11 +233,32 @@ const EditPostForm = props => {
             </div>
             <div className={classes.formControl}>
               <Field
-                name="content"
-                component={renderEditor}
-                handleSave={handleSubmit}
-                handleImageUpload={handleUpload}
+                name="description"
+                component={renderTextField}
                 disabled={formDisabled}
+                label="Meta description"
+                variant="outlined"
+                InputProps={{
+                  classes: {
+                    input: classes.smallInput
+                  }
+                }}
+                fullWidth
+                multiline
+                rows={2}
+                maxlength={158}
+                rowsMax={4}
+              />
+            </div>
+            <div className={classes.formControl}>
+              <label>Meta tags</label>
+              <Field
+                name="tags"
+                label="Tags"
+                variant="outlined"
+                component={renderTagsField}
+                disabled={formDisabled}
+                fullWidth
                 key={initialValues.get("uuid")}
               />
             </div>
@@ -272,23 +308,6 @@ const EditPostForm = props => {
               />
             </div>
           </Paper>
-          <Paper className={classes.paper}>
-            <Typography component="h5" variant="h5">
-              Tags
-            </Typography>
-            <div className={classes.formControl}>
-              <Field
-                name="tags"
-                label="tags"
-                variant="outlined"
-                component={renderTagsField}
-                disabled={formDisabled}
-                fullWidth
-                key={initialValues.get("uuid")}
-              />
-            </div>
-          </Paper>
-
           <DeleteButton
             handleDelete={handleDelete}
             isLoading={isDeleting}

@@ -12,6 +12,7 @@ import {
 } from "@material-ui/icons";
 import { Editable, Slate, withReact } from "slate-react";
 import { createEditor } from "slate";
+import { css } from "emotion";
 import { fromJS } from "immutable";
 import { withHistory } from "slate-history";
 import React, { useCallback, useMemo, useState } from "react";
@@ -78,6 +79,10 @@ const PostEditor = ({ onChange, handleImageUpload, handleSave, ...props }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         decorate={decorate}
+        className={css`
+          max-height: 800px;
+          overflow: scroll;
+        `}
         placeholder="What's on your mind?"
         spellCheck
         autoFocus
