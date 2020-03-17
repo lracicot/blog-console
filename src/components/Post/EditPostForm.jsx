@@ -246,7 +246,7 @@ const EditPostForm = props => {
                 fullWidth
                 multiline
                 rows={2}
-                maxlength={158}
+                maxLength={158}
                 rowsMax={4}
               />
             </div>

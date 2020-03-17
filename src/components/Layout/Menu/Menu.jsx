@@ -15,6 +15,7 @@ import DashboardLink from "./Links/DashboardLink";
 import MenuHeader from "./MenuHeader";
 import NewPostButton from "./Links/NewPostButton";
 import PostLink from "./Links/PostLink";
+import PostsLink from "./Links/PostsLink";
 
 const drawerWidth = 300;
 
@@ -52,6 +53,8 @@ const Menu = props => {
       <DashboardLink onClick={handleClose} />
       <Divider />
       <AssetsLink onClick={handleClose} />
+      <Divider />
+      <PostsLink onClick={handleClose} />
       <Divider />
       <NewPostButton
         createPost={createPost}

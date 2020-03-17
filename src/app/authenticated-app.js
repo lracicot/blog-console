@@ -6,8 +6,9 @@ import React from "react";
 import { ThemeProvider } from "@material-ui/styles";
 
 import EditPost from "../views/Post/EditPost";
-import ListAssets from "../views/Asset/ListAssets";
 import Layout from "../views/Layout";
+import ListAssets from "../views/Asset/ListAssets";
+import ListPost from "../views/Post/ListPost";
 import LogoutComponent from "../views/Login/Logout";
 import MainComponent from "../views/Dashboard/App";
 import history from "../history";
@@ -25,6 +26,7 @@ class App extends React.Component {
                 <Switch>
                   <Route path="/post/:uuid/edit" component={EditPost} />
                   <Route path="/assets" component={ListAssets} />
+                  <Route path="/posts" component={ListPost} />
                   <Route path="/logout" component={LogoutComponent} />
                   <Route path="/" component={MainComponent} />
                   <Redirect from="/auth" to="/" />
