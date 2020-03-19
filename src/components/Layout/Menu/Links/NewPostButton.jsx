@@ -27,14 +27,18 @@ const NewPostButton = props => {
   const { createPost, isCreating, ...rest } = props;
 
   return (
-    <AddPostModal createPost={createPost} isCreating={isCreating}>
-      <ListItem button {...rest}>
-        <ListItemIcon>
-          <Add className={classes.lightIcon} />
-        </ListItemIcon>
-        <ListItemText className={classes.link} primary="New post" />
-      </ListItem>
-    </AddPostModal>
+    <AddPostModal
+      renderAddButton={handleOpen => (
+        <ListItem button {...rest} onClick={handleOpen}>
+          <ListItemIcon>
+            <Add className={classes.lightIcon} />
+          </ListItemIcon>
+          <ListItemText className={classes.link} primary="New post" />
+        </ListItem>
+      )}
+      createPost={createPost}
+      isCreating={isCreating}
+    />
   );
 };
 

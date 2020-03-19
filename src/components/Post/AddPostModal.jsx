@@ -3,6 +3,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import React, { useRef, useEffect } from "react";
+import slugify from "slugify";
 
 import PropTypes from "prop-types";
 
@@ -24,8 +25,16 @@ const useStyles = makeStyles(theme => ({
 
 const FormModal = props => {
   const classes = useStyles();
-  const { children, createPost, isCreating } = props;
+  const { renderAddButton, createPost, isCreating } = props;
   const [open, setOpen] = React.useState(false);
+
+  const handleCreatePost = data => {
+    const jsData = data.toJS();
+    createPost({
+      ...jsData,
+      slug: slugify(jsData.title).toLowerCase()
+    });
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -48,7 +57,7 @@ const FormModal = props => {
 
   return (
     <div>
-      <div onClick={handleOpen}>{children}</div>
+      {renderAddButton(handleOpen)}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -63,7 +72,7 @@ const FormModal = props => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <AddPostForm onSubmit={createPost} isCreating={isCreating} />
+            <AddPostForm onSubmit={handleCreatePost} isCreating={isCreating} />
           </div>
         </Fade>
       </Modal>
@@ -72,7 +81,7 @@ const FormModal = props => {
 };
 
 FormModal.propTypes = {
-  children: PropTypes.node,
+  renderAddButton: PropTypes.func.isRequired,
   createPost: PropTypes.func.isRequired,
   isCreating: PropTypes.bool
 };

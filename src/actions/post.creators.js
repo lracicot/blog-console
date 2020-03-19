@@ -84,7 +84,7 @@ export function archivePost(uuid) {
 export function deletePost(uuid) {
   return dispatch => {
     dispatch(Actions.deletePostsRequest(uuid));
-    dispatch(
+    return dispatch(
       deleteData(
         postTypes.POSTS_API.DELETE_POST_URL(uuid),
         {},
@@ -92,6 +92,6 @@ export function deletePost(uuid) {
         Actions.deletePostsSuccess,
         Actions.deletePostsFailure
       )
-    ).then(() => history.push(`/`));
+    );
   };
 }

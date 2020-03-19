@@ -1,12 +1,11 @@
 import { connect } from "react-redux";
 import React from "react";
-import slugify from "slugify";
 
 import PropTypes from "prop-types";
 
+import Error from "../../components/FlashMessage/Error";
 import HeaderBar from "../../components/Layout/Header/HeaderBar";
 import Menu from "../../components/Layout/Menu/Menu";
-import Error from "../../components/FlashMessage/Error";
 import * as actionCreators from "../../actions/post.creators";
 
 class Layout extends React.Component {
@@ -29,16 +28,8 @@ class Layout extends React.Component {
     this.props.retreivePosts();
   }
 
-  createPost(data) {
-    const jsData = data.toJS();
-    this.props.createPost({
-      ...jsData,
-      slug: slugify(jsData.title).toLowerCase()
-    });
-  }
-
   render() {
-    const { children, error, posts, isCreatingPost } = this.props;
+    const { children, error, posts, isCreatingPost, createPost } = this.props;
     const { isMenuOpened } = this.state;
 
     return (
@@ -56,7 +47,7 @@ class Layout extends React.Component {
           posts={posts}
           handleClose={this.handleMenuClose.bind(this)}
           isOpened={isMenuOpened}
-          createPost={this.createPost.bind(this)}
+          createPost={createPost}
           isCreatingPost={isCreatingPost}
         />
         {children}

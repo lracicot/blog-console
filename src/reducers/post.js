@@ -109,11 +109,15 @@ export default function(state = Map(), action) {
       });
     case postAction.DELETE_POST_REQUEST:
       return state.merge({
-        isDeleting: true
+        posts: state.get("posts").update(
+          state
+            .get("posts")
+            .findIndex(item => item.get("uuid") === action.data),
+          post => post.set("isDeleting", true)
+        )
       });
     case postAction.DELETE_POST_SUCCESS:
       return state.merge({
-        isDeleting: false,
         posts: state
           .get("posts")
           .delete(
@@ -124,7 +128,12 @@ export default function(state = Map(), action) {
       });
     case postAction.DELETE_POST_FAILURE:
       return state.merge({
-        isDeleting: false,
+        posts: state.get("posts").update(
+          state
+            .get("posts")
+            .findIndex(item => item.get("uuid") === action.data),
+          post => post.set("isDeleting", false)
+        ),
         error: action.error.toString()
       });
     default:

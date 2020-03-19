@@ -2,13 +2,15 @@ import { Container } from "@material-ui/core";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import React from "react";
+import { fromJS } from "immutable";
 
 import PropTypes from "prop-types";
 
-import Spinner from "../../components/Spinner/Spinner";
 import EditPostForm from "../../components/Post/EditPostForm";
-import * as postCreators from "../../actions/post.creators";
+import Spinner from "../../components/Spinner/Spinner";
 import * as assetCreators from "../../actions/asset.creators";
+import history from "../../history";
+import * as postCreators from "../../actions/post.creators";
 
 const styles = {
   formContainer: {
@@ -58,11 +60,12 @@ class EditPost extends React.Component {
   }
 
   handleDelete() {
-    console.log(this.props.post);
     if (this.props.post.header_image) {
       this.props.deleteAsset(this.props.post.header_image.uuid);
     }
-    this.props.deletePost(this.state.postUuid);
+    this.props
+      .deletePost(this.state.postUuid)
+      .then(() => history.push(`/posts`));
   }
 
   handleUpload(file, data) {
@@ -137,8 +140,16 @@ function mapStateToProps(state) {
     isSaving: state.hasIn(["post", "isSaving"])
       ? state.getIn(["post", "isSaving"])
       : false,
-    isDeleting: state.hasIn(["post", "isDeleting"])
-      ? state.getIn(["post", "isDeleting"])
+    isDeleting: state.hasIn(["post", "posts"])
+      ? (
+          state
+            .getIn(["post", "posts"])
+            .find(
+              post =>
+                post.get("uuid") ===
+                state.getIn(["post", "currentPost", "uuid"])
+            ) || fromJS({})
+        ).get("isDeleting")
       : false
   };
 }
