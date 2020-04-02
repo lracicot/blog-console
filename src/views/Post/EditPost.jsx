@@ -11,6 +11,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import * as assetCreators from "../../actions/asset.creators";
 import history from "../../history";
 import * as postCreators from "../../actions/post.creators";
+import { postTypes } from "../../consts";
 
 const styles = {
   formContainer: {
@@ -99,6 +100,7 @@ class EditPost extends React.Component {
             isArchiving={isArchiving}
             isDeleting={isDeleting}
             isSaving={isSaving}
+            websiteUrl={postTypes.POST_URL}
           />
         </Container>
       );

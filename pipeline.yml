@@ -18,6 +18,10 @@ Parameters:
     Type: String
     Default: console.blog.louisracicot.net
 
+  WebsiteURL:
+    Type: String
+    Default: website.blog.louisracicot.net
+
   ApiStack:
     Description: The name of the api stack
     Type: String
@@ -203,6 +207,8 @@ Resources:
             Value: !Join ['/', ['https:/', !Ref Endpoint, 'auth']]
           - Name: REACT_APP_AUTH_REDIRECT_SIGNOUT
             Value: !Join ['/', ['https:/', !Ref Endpoint, 'logout']]
+          - Name: REACT_APP_WEBSITE_URL
+            Value: !Join ['/', ['https:/', !Ref WebsiteURL]]
 
 
   CloudFormationRole:

@@ -141,7 +141,8 @@ const EditPostForm = props => {
     pristine,
     submitting,
     initialValues,
-    handleUpload
+    handleUpload,
+    websiteUrl
   } = props;
 
   const actionButton =
@@ -285,11 +286,26 @@ const EditPostForm = props => {
               </Typography>
             </div>
             <Divider className={classes.rightMenuDivider} />
-            Status:{" "}
-            {initialValues
-              .get("status")
-              .charAt(0)
-              .toUpperCase() + initialValues.get("status").slice(1)}
+            <p>
+              Status:{" "}
+              {initialValues
+                .get("status")
+                .charAt(0)
+                .toUpperCase() + initialValues.get("status").slice(1)}
+            </p>
+            {initialValues.get("status") === "published" ? (
+              <p>
+                <a
+                  href={`${websiteUrl(initialValues.get("slug"))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View post
+                </a>
+              </p>
+            ) : (
+              ""
+            )}
             <Divider className={classes.rightMenuDivider} />
             <div className={classes.buttonGroup}>{actionButton}</div>
           </Paper>
@@ -334,7 +350,8 @@ EditPostForm.propTypes = {
   pristine: PropTypes.any,
   reset: PropTypes.func,
   submitting: PropTypes.bool,
-  initialValues: PropTypes.any
+  initialValues: PropTypes.any,
+  websiteUrl: PropTypes.func
 };
 
 export default reduxForm({

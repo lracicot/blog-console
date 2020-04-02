@@ -28,5 +28,6 @@ export const postTypes = {
     ARCHIVE_POST_URL: uuid =>
       `${process.env.REACT_APP_API_URL}/post/${uuid}/archive`,
     CREATE_POST_URL: () => `${process.env.REACT_APP_API_URL}/post`
-  }
+  },
+  POST_URL: slug => `${process.env.REACT_APP_WEBSITE_URL}/post/${slug}`
 };
