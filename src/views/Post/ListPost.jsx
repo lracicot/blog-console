@@ -1,5 +1,6 @@
-import { Add } from "@material-ui/icons";
+import { Add, Edit } from "@material-ui/icons";
 import { Button, Grid, Paper, makeStyles } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
 import { css } from "emotion";
 import { fromJS } from "immutable";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,12 +9,12 @@ import moment from "moment";
 
 import {
   createPost,
-  deletePost,
+  // deletePost,
   retreivePosts
 } from "../../actions/post.creators";
 import { useFetching } from "../../hook";
 import AddPostModal from "../../components/Post/AddPostModal";
-import DeleteButton from "../../components/Button/DeleteButton";
+// import DeleteButton from "../../components/Button/DeleteButton";
 import Table from "../../components/Table/Table";
 
 const useStyles = makeStyles(theme => ({
@@ -61,13 +62,20 @@ const ListPost = () => {
         id: "action",
         accessor: function actionCol(row) {
           return (
-            <DeleteButton
-              key={row.uuid}
-              handleDelete={() => dispatch(deletePost(row.uuid))}
-              isLoading={row.isDeleting}
-              disabled={row.isDeleting}
-            />
+            <div>
+              <NavLink to={`/post/${row.uuid}/edit`}>
+                <Button variant="contained">
+                  <Edit />
+                </Button>
+              </NavLink>
+            </div>
           );
+          // <DeleteButton
+          //   key={row.uuid}
+          //   handleDelete={() => dispatch(deletePost(row.uuid))}
+          //   isLoading={row.isDeleting}
+          //   disabled={row.isDeleting}
+          // />
         }
       }
     ],
