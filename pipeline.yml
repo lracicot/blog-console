@@ -6,13 +6,14 @@ Parameters:
   RepositoryName:
     Type: String
 
+  RepositoryStack:
+    Type: String
+
   BranchName:
     Type: String
-    Default: master
 
   StackName:
     Type: String
-    Default: blog-console
 
   Endpoint:
     Type: String
@@ -48,11 +49,6 @@ Resources:
               - '*'
             MaxAge: 3000
 
-  SourceRepository:
-    Type: AWS::CodeCommit::Repository
-    Properties:
-      RepositoryName: !Ref RepositoryName
-
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
@@ -70,7 +66,8 @@ Resources:
                 Provider: CodeCommit
                 Version: 1
               Configuration:
-                RepositoryName: !GetAtt SourceRepository.Name
+                RepositoryName:
+                  Fn::ImportValue: !Sub '${RepositoryStack}-SourceRepository-Name'
                 BranchName: !Ref BranchName
                 PollForSourceChanges: false
               OutputArtifacts:
@@ -331,7 +328,7 @@ Resources:
                   - codecommit:UploadArchive
                   - codecommit:GetUploadArchiveStatus
                 Resource:
-                  - !GetAtt SourceRepository.Arn
+                  - Fn::ImportValue: !Sub '${RepositoryStack}-SourceRepository-Arn'
               - Effect: Allow
                 Action:
                   - "s3:GetObject"
