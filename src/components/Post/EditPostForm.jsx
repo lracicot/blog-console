@@ -214,6 +214,29 @@ const EditPostForm = props => {
           </Paper>
           <Paper className={classes.paper}>
             <Typography component="h5" variant="h5">
+              Abstract
+            </Typography>
+            <div className={classes.formControl}>
+              <Field
+                name="abstract"
+                component={renderTextField}
+                disabled={formDisabled}
+                label="Abstract"
+                variant="outlined"
+                InputProps={{
+                  classes: {
+                    input: classes.smallInput
+                  }
+                }}
+                fullWidth
+                multiline
+                rows={4}
+                rowsMax={10}
+              />
+            </div>
+          </Paper>
+          <Paper className={classes.paper}>
+            <Typography component="h5" variant="h5">
               SEO
             </Typography>
             <div className={classes.formControl}>
