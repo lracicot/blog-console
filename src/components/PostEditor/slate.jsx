@@ -22,10 +22,12 @@ import isHotkey from "is-hotkey";
 
 import { getCodeBlockDecorator, withCode } from "./slate-code";
 import { withImage } from "./slate-image/with-image";
+import { withLinks } from "./slate-link/with-link";
 import BlockButton from "./Toolbar/Buttons/BlockButton";
 import Element from "./Elements/Element";
 import InsertImageButton from "./Toolbar/Buttons/InsertImageButton";
 import Leaf from "./Elements/Leaf";
+import LinkButton from "./Toolbar/Buttons/LinkButton";
 import MarkButton, { toggleMark } from "./Toolbar/Buttons/MarkButton";
 import Toolbar from "./Toolbar/Toolbar";
 
@@ -50,7 +52,8 @@ const PostEditor = ({ onChange, handleImageUpload, handleSave, ...props }) => {
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(
-    () => withHistory(withCode(withImage(withReact(createEditor())))),
+    () =>
+      withHistory(withCode(withLinks(withImage(withReact(createEditor()))))),
     []
   );
   const decorate = useCallback(getCodeBlockDecorator(editor), [editor]);
@@ -74,6 +77,7 @@ const PostEditor = ({ onChange, handleImageUpload, handleSave, ...props }) => {
         <BlockButton format="numbered-list" icon={<FormatListNumbered />} />
         <BlockButton format="bulleted-list" icon={<FormatListBulleted />} />
         <InsertImageButton handleUpload={handleImageUpload} />
+        <LinkButton />
       </Toolbar>
       <Editable
         renderElement={renderElement}
